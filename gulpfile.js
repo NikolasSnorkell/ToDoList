@@ -111,12 +111,12 @@ function js(){
 
 function images(){
     return src(path.src.img)
-        .pipe(imagemin({
-            proggressive:true,
-            svgoPlugins:[{removeViewBox: false}],
-            interlaced: true,
-            optimiztionLevel: 3
-        }))
+        // .pipe(imagemin({
+        //     proggressive:true,
+        //     svgoPlugins:[{removeViewBox: false}],
+        //     interlaced: true,
+        //     optimiztionLevel: 3
+        // }))
         .pipe(dest(path.build.img))
         .pipe(browsersync.stream())
 }
