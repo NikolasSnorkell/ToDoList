@@ -18,9 +18,10 @@ let todosCurrentObj = ["Draw the vehicle","Wash the dishes"];
 function showTodos(arr){
     $('#main__todo_block').html('');
 
-    for(todo of arr){
-        $('#main__todo_block').html($('#main__todo_block').html()+`<div class="todoitem">
+    for([index,todo] of arr.entries()){
+        $('#main__todo_block').html($('#main__todo_block').html()+`<div class="todoitem" name="${index}">
         ${todo}
+        <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
     </div>`);
     }
 }
@@ -35,3 +36,11 @@ $('#addToDo').click(function(){
 
     showTodos(todosCurrentObj);
 })
+
+
+function delItem(elem){
+       
+    let par_id = $(elem).parent("div").attr("name");
+   todosCurrentObj.splice(par_id,1);
+    showTodos(todosCurrentObj);
+}

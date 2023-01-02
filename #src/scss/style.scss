@@ -91,7 +91,18 @@ body {
         margin: 10px auto;
         background: rgb(169, 209, 247);
         border: 2px solid rgb(2, 113, 187);
-        
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .todoitem__trash{
+          width: 1.5rem;
+          // float: right
+
+          &:hover{
+            cursor: pointer;
+          }
+        }
       }
     }
   }
