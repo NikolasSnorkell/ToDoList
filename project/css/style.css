@@ -179,6 +179,50 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background 0.3s ease-in-out, border 0.2s ease-in-out;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block {
+  display: flex;
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
+  align-items: center;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check {
+  opacity: 0.01;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label {
+  position: relative;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label:hover {
+  cursor: pointer;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label:hover::before {
+  background: rgb(85, 85, 85);
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label.checked {
+  cursor: pointer;
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label.checked::before {
+  background: rgb(85, 85, 85);
+}
+
+#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label::before {
+  content: "";
+  position: absolute;
+  left: -2.5rem;
+  top: -0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: rgb(212, 212, 212);
+  border-radius: 15%;
+  transition: background 0.3s ease-in-out;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__trash {
@@ -187,4 +231,9 @@ body {
 
 #main #main__todo #main__todo_block .todoitem .todoitem__trash:hover {
   cursor: pointer;
+}
+
+#main #main__todo #main__todo_block .todoitem.done {
+  background: rgb(221, 221, 221);
+  border: 2px solid rgb(148, 148, 148);
 }
