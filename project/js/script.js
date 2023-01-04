@@ -112,7 +112,8 @@ function transferItem(arr1,index1,arr2,status){
     
     arr1.splice(index1,1);
     arr2.push({body:`${tempBody}`,status:`${status}`},);
-  
-    showTodos([...arr1,...arr2]);
+    console.log(arr1);
+    console.log(arr2);
+    showTodos([...todosActive,...todosDone]);
 }
 
