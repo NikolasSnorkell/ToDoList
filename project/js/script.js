@@ -1,7 +1,11 @@
+
 new Sortable(document.querySelector("#main__todo_block"), {
+    
     sortable: true,
+    // store: true,
     dropBubble: true,
     direction: "vertical",
+    
     filter: ".sortable__block .done",
     forceFallback: true,
     fallbackClass: "sortable__block",
@@ -19,6 +23,42 @@ new Sortable(document.querySelector("#main__todo_block"), {
 
         //  console.log(evt.newIndex);
     },
+    onUpdate: function (/**Event*/evt) {
+        sendToDos();
+      },
+      onEnd: function(/**Event*/evt) {
+        evt.newIndex 
+     let temp;
+
+      
+
+        if(evt.oldIndex!=evt.newIndex){
+        if(evt.newIndex>=todosActive.length){
+            evt.newIndex = todosActive.length-1;
+        }
+        if(evt.oldIndex>=todosActive.length){
+            evt.oldIndex = todosActive.length-1;
+        }
+        console.log(evt.oldIndex+" "+ evt.newIndex);
+        temp = todosActive[evt.newIndex].body;
+        todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body 
+        todosActive[evt.oldIndex].body = temp;
+
+        let tempArr = $('.todoitem ').not('.todoitem.done');
+
+        for([index,todo] of todosActive.entries()){
+            todo.body = tempArr[index].innerText;
+        }
+
+
+      
+        // console.log(todosActive);
+        sendToDos();
+        }
+        
+        // sendToDos();
+        // console.log(evt.item.children[0].className)
+      }
 });
 
 let todosActive = [],
@@ -37,8 +77,32 @@ else day +=1;
 if((month+1)<10) month = `0${month+1}` 
 else month+=1;;
 
-$('#main__todo_title h2').html(`${day}/${month}/${year}`)
+let final_date = `${day}-${month}-${year}`;
+$('#main__todo_title h2').html(final_date)
 //--------------------------
+// получаем данные о делах с сервера
+
+function gettingJson(){
+    $.post("php/getJson.php", {"aim":"get","date":final_date}, function (response) {
+        
+        response = JSON.parse(response);
+        if(response[0]!=null) todosActive = [...response[0]];
+        else todosActive = [];
+        if(response[1]!=null) todosDone = [...response[1]];
+        else todosDone=[];
+        // console.log(todosActive);
+        // вызов функции показа всех дел
+showTodos([...todosActive, ...todosDone]);
+    });
+
+
+}
+
+gettingJson();
+
+
+
+//----------------------------
 // функция показа всех имеющихся дел, как сделанных так и активных
 
 function showTodos(arr) {
@@ -77,24 +141,24 @@ function showTodos(arr) {
     }
 }
 
+
+
 //----------------------------------
 
-todosActive = [{
-        body: "Draw the vehicle",
-        status: "active"
-    },
-    {
-        body: "Wash the dishes",
-        status: "active"
-    },
-];
-todosDone = [{
-    body: "Create project",
-    status: "done",
-}, ];
+// todosActive = [{
+//         body: "Draw the vehicle",
+//         status: "active"
+//     },
+//     {
+//         body: "Wash the dishes",
+//         status: "active"
+//     },
+// ];
+// todosDone = [{
+//     body: "Create project",
+//     status: "done",
+// }, ];
 
-// вызов функции показа всех дел
-showTodos([...todosActive, ...todosDone]);
 
 // слушатель для добавления нового дела в список
 $("#addToDo").click(function () {
@@ -106,6 +170,7 @@ $("#addToDo").click(function () {
     });
 
     showTodos([...todosActive, ...todosDone]);
+    sendToDos();
 });
 //------------------------------------
 // функция удаления дела
@@ -122,6 +187,7 @@ function delItem(elem) {
 
     showTodos([...todosActive, ...todosDone]);
     // console.log(todosCurrentObj);
+    sendToDos();
 }
 
 //-----------------------------
@@ -135,6 +201,7 @@ function markItem(elem) {
     // выше проверка при отметке дела, чтобы переместить его в верный массив
     $(elem).toggleClass("checked");
     $(elem).parent("div").parent(".todoitem").toggleClass("done");
+    sendToDos();
 }
 
 //--------------------------------------
@@ -150,9 +217,13 @@ function transferItem(arr1, index1, arr2, status) {
     // console.log(arr1);
     // console.log(arr2);
     showTodos([...todosActive, ...todosDone]);
+    
 }
 
 
+
+// --------------------------------------
+// отправка данных на сервер
 
 function sendToDos() {
 
@@ -161,12 +232,13 @@ function sendToDos() {
     let jsonString = {
         aim: "create/update",
         arr1: todosActive,
-        arr2: todosDone
+        arr2: todosDone,
+        date:final_date
     };
 
-    $.get("php/getJson.php", jsonString, function (response) {
+    $.post("php/updateJson.php", jsonString, function (response) {
         console.log(response);
     });
 }
 
-sendToDos();
+// sendToDos();

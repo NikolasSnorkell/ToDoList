@@ -1,17 +1,18 @@
 <?php
-$path = '../json/test.json';
-$request = $_GET;
+$path = '../json/';
+$request = $_POST;
 
-if ($request['aim'] == "create/update") {
+if ($request['aim'] == "get") {
 
-    $jsonObj = [$request["arr1"], $request["arr2"]];
+    $filename = $path.$request['date'].'.json';
 
-    $jsonString = json_encode($jsonObj, JSON_PRETTY_PRINT);
-    // Write in the file
-    $fp = fopen($path, 'w');
-    fwrite($fp, $jsonString);
-    fclose($fp);
-
-    print_r('Create/Update Done');
+    $jsonString = file_get_contents($filename);
+   
+    $jsonObj = json_decode($jsonString,true);
+  
+  
+    
+    print_r($jsonString);
+    // print_r('Getting Done');
 
 }
