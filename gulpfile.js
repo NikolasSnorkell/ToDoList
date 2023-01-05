@@ -8,6 +8,8 @@ let fs = require("fs");
 let path = {
     build:{
         html:project_folder+"/",
+        php:project_folder+"/php/",
+        json:project_folder+"/json/",
         css:project_folder+"/css/",
         js:project_folder+"/js/",
         img:project_folder+"/img/",
@@ -15,6 +17,8 @@ let path = {
     },
     src:{
         html:[source_folder+"/*.html","!"+source_folder+"/_*.html",],
+        php:source_folder+"/php/**/*",
+        json:source_folder+"/json/**/*",
         css:source_folder+"/scss/style.scss",
         js:source_folder+"/js/**/*",
         jq:source_folder+"/js/jquery-3.6.0.min.js",
@@ -23,6 +27,8 @@ let path = {
     },
     watch:{
         html:source_folder+"/**/*.html",
+        php:source_folder+"/php/**/*.php",
+        json:source_folder+"/json/**/*.json",
         css:source_folder+"/scss/**/*.scss",
         js:source_folder+"/js/**/*.js",
         img:source_folder+"/img/**/*.{jpg,png,svg,gif,ico,webp}",
@@ -67,6 +73,17 @@ function html(){
     return src(path.src.html)
         .pipe(fileinclude())
         .pipe(dest(path.build.html))
+        .pipe(browsersync.stream())
+}
+
+function php(){
+    return src(path.src.php)
+        .pipe(dest(path.build.php))
+        .pipe(browsersync.stream())
+}
+function json(){
+    return src(path.src.json)
+        .pipe(dest(path.build.json))
         .pipe(browsersync.stream())
 }
 
@@ -149,6 +166,8 @@ gulp.task("otf2ttf",function(){
 
 function watchFiles(){
     gulp.watch([path.watch.html],html);
+    gulp.watch([path.watch.php],php);
+    gulp.watch([path.watch.json],json);
     gulp.watch([path.watch.css],css);
     gulp.watch([path.watch.js],js);
     gulp.watch([path.watch.img],images);
@@ -162,7 +181,7 @@ function clean(){
 
 
 
-let build = gulp.series(clean,gulp.parallel(js,css,html,images,fonts));
+let build = gulp.series(clean,gulp.parallel(js,css,html,json,php,images,fonts));
 let watch = gulp.parallel(build,watchFiles,browserSync);
 
 
@@ -171,6 +190,8 @@ exports.html = html;
 exports.fonts = fonts;
 exports.images = images;
 exports.css = css;
+exports.php = php;
+exports.json = json;
 exports.js =js;
 exports.watch = watch;
 exports.build = build;

@@ -1,0 +1,18 @@
+[
+    [
+        {
+            "body": "Draw the vehicle",
+            "status": "active"
+        },
+        {
+            "body": "Wash the dishes",
+            "status": "active"
+        }
+    ],
+    [
+        {
+            "body": "Create project",
+            "status": "done"
+        }
+    ]
+]

@@ -1,129 +1,172 @@
-
-
-
-new Sortable(document.querySelector('#main__todo_block'), {
-    
+new Sortable(document.querySelector("#main__todo_block"), {
     sortable: true,
     dropBubble: true,
-    direction: 'vertical',
+    direction: "vertical",
     filter: ".sortable__block .done",
     forceFallback: true,
     fallbackClass: "sortable__block",
     dragClass: "sortable__block",
     animation: 300,
     easing: "cubic-bezier(1, 0, 0, 1)",
-    onSort: function (/**Event*/evt) {
-        var itemEl = evt.item;  // dragged HTMLElement
-        evt.to;    // target list
-        evt.from;  // previous list
-        evt.oldIndex;  // element's old index within old parent
-        evt.newIndex=2;  // element's new index within new parent
-        evt.clone // the clone element
-        evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-      
-      //  console.log(evt.newIndex);
-    
+    onSort: function ( /**Event*/ evt) {
+        var itemEl = evt.item; // dragged HTMLElement
+        evt.to; // target list
+        evt.from; // previous list
+        evt.oldIndex; // element's old index within old parent
+        evt.newIndex = 2; // element's new index within new parent
+        evt.clone; // the clone element
+        evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
+
+        //  console.log(evt.newIndex);
     },
 });
 
-let todosActive = [], todosDone = [];
+let todosActive = [],
+    todosDone = [];
 let todosCurrentObj = [];
 
 //--------------------------
+// определяем текующий день, месяц и год
+let date = new Date();
+let day = date.getDay();
+let month = date.getMonth();
+let year = date.getFullYear();
+
+if(day<10) day = `0${day+1}`
+else day +=1;
+if((month+1)<10) month = `0${month+1}` 
+else month+=1;;
+
+$('#main__todo_title h2').html(`${day}/${month}/${year}`)
+//--------------------------
 // функция показа всех имеющихся дел, как сделанных так и активных
 
-function showTodos(arr){
+function showTodos(arr) {
+    $("#main__todo_block").html("");
 
+    for ([index, todo] of arr.entries()) {
+        let class__check,
+            class__item,
+            shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
 
-    $('#main__todo_block').html('');
-
-    for([index,todo] of arr.entries()){
-        let class__check,class__item,shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
-
-// проверка статуса дела
-        if(todo.status=="done"){
-            class__check="checked";
-            class__item="done";
+        // проверка статуса дела
+        if (todo.status == "done") {
+            class__check = "checked";
+            class__item = "done";
             shift = todosActive.length; // сдвиг на длину массива активных дел
         } else {
-            class__check="";
-            class__item="";
+            class__check = "";
+            class__item = "";
             shift = 0;
         }
 
-        $('#main__todo_block').html($('#main__todo_block').html()+`<div class="sortable__block"><div class="todoitem ${class__item}" name="${index-shift}">
+        $("#main__todo_block").html(
+            $("#main__todo_block").html() +
+            `<div class="sortable__block"><div class="todoitem ${class__item}" name="${
+          index - shift
+        }">
         <div class="todoitem__check_block">
         <input type="checkbox" class="todoitem__check" id="todo${index}">
-        <label for="todo${index}" class="todoitem__label ${class__check}" onclick="markItem(this)">${todo.body}</label>
+        <label for="todo${index}" class="todoitem__label ${class__check}" onclick="markItem(this)">${
+          todo.body
+        }</label>
         </div>
         <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
-    </div></div>`);
-
-
+    </div></div>`
+        );
     }
 }
 
 //----------------------------------
 
-todosActive = [  {body:"Draw the vehicle", status:"active"},
-{body:"Wash the dishes", status:"active"}]
+todosActive = [{
+        body: "Draw the vehicle",
+        status: "active"
+    },
+    {
+        body: "Wash the dishes",
+        status: "active"
+    },
+];
 todosDone = [{
-    body:"Create project",status:"done"
-},];
-
+    body: "Create project",
+    status: "done",
+}, ];
 
 // вызов функции показа всех дел
-showTodos([...todosActive,...todosDone])
-
-
-
+showTodos([...todosActive, ...todosDone]);
 
 // слушатель для добавления нового дела в список
-$('#addToDo').click(function(){
-    let toDoText = $('#typeToDo').val();
-    $('#typeToDo').val("");
-    todosActive.push({body:`${toDoText}`,status:"active"},);
+$("#addToDo").click(function () {
+    let toDoText = $("#typeToDo").val();
+    $("#typeToDo").val("");
+    todosActive.push({
+        body: `${toDoText}`,
+        status: "active"
+    });
 
-    showTodos([...todosActive,...todosDone]);
-})
+    showTodos([...todosActive, ...todosDone]);
+});
 //------------------------------------
 // функция удаления дела
-function delItem(elem){
-       
-    let parent_id = $(elem).parent("div").attr("name");// получение id из поля
-     // name в todoitem
+function delItem(elem) {
+    let parent_id = $(elem).parent("div").attr("name"); // получение id из поля
+    // name в todoitem
 
-     if($(elem).parent("div").hasClass("done")){// выбор нужного массива из которого нужно удалить элемент
-        todosDone.splice(parent_id,1);
-     } else {
-        todosActive.splice(parent_id,1);
-     }
-    
-    showTodos([...todosActive,...todosDone]);
-    // console.log(todosCurrentObj); 
+    if ($(elem).parent("div").hasClass("done")) {
+        // выбор нужного массива из которого нужно удалить элемент
+        todosDone.splice(parent_id, 1);
+    } else {
+        todosActive.splice(parent_id, 1);
+    }
+
+    showTodos([...todosActive, ...todosDone]);
+    // console.log(todosCurrentObj);
 }
 
 //-----------------------------
 
 // функция отметки сделанного дела
-function markItem(elem){
-    let todoIndex = $(elem).parent('div').parent(".todoitem").attr("name");
-    if($(elem).hasClass('checked')) transferItem(todosDone,todoIndex,todosActive,"active");
-    else  transferItem(todosActive,todoIndex,todosDone,"done");
+function markItem(elem) {
+    let todoIndex = $(elem).parent("div").parent(".todoitem").attr("name");
+    if ($(elem).hasClass("checked"))
+        transferItem(todosDone, todoIndex, todosActive, "active");
+    else transferItem(todosActive, todoIndex, todosDone, "done");
     // выше проверка при отметке дела, чтобы переместить его в верный массив
     $(elem).toggleClass("checked");
-    $(elem).parent('div').parent(".todoitem").toggleClass("done");
+    $(elem).parent("div").parent(".todoitem").toggleClass("done");
 }
 
 //--------------------------------------
-// функция для 
-function transferItem(arr1,index1,arr2,status){
+// функция для
+function transferItem(arr1, index1, arr2, status) {
     let tempBody = arr1[index1].body;
-    
-    arr1.splice(index1,1);
-    arr2.push({body:`${tempBody}`,status:`${status}`},);
+
+    arr1.splice(index1, 1);
+    arr2.push({
+        body: `${tempBody}`,
+        status: `${status}`
+    });
     // console.log(arr1);
     // console.log(arr2);
-    showTodos([...todosActive,...todosDone]);
+    showTodos([...todosActive, ...todosDone]);
 }
 
+
+
+function sendToDos() {
+
+    
+
+    let jsonString = {
+        aim: "create/update",
+        arr1: todosActive,
+        arr2: todosDone
+    };
+
+    $.get("php/getJson.php", jsonString, function (response) {
+        console.log(response);
+    });
+}
+
+sendToDos();
