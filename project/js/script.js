@@ -199,9 +199,11 @@ function markItem(elem) {
         transferItem(todosDone, todoIndex, todosActive, "active");
     else transferItem(todosActive, todoIndex, todosDone, "done");
     // выше проверка при отметке дела, чтобы переместить его в верный массив
+    
+  
     $(elem).toggleClass("checked");
     $(elem).parent("div").parent(".todoitem").toggleClass("done");
-    sendToDos();
+   
 }
 
 //--------------------------------------
@@ -217,7 +219,7 @@ function transferItem(arr1, index1, arr2, status) {
     // console.log(arr1);
     // console.log(arr2);
     showTodos([...todosActive, ...todosDone]);
-    
+    sendToDos();
 }
 
 

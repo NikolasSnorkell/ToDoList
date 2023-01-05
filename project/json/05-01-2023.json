@@ -5,6 +5,10 @@
             "status": "active"
         },
         {
+            "body": "Draw the vehicle",
+            "status": "active"
+        },
+        {
             "body": "test",
             "status": "active"
         },
@@ -13,10 +17,5 @@
             "status": "active"
         }
     ],
-    [
-        {
-            "body": "Draw the vehicle",
-            "status": "done"
-        }
-    ]
+    null
 ]
