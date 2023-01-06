@@ -183,6 +183,7 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block {
+  width: 80%;
   display: flex;
   -moz-column-gap: 1rem;
        column-gap: 1rem;
@@ -194,7 +195,9 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label {
+  width: 100%;
   position: relative;
+  word-wrap: break-word;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label:hover {
