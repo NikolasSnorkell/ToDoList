@@ -111,6 +111,7 @@ body {
 
 #main {
   overflow: hidden;
+  padding: 15px;
   width: 100%;
   height: 100%;
   background-image: url("../img/back.jpg");
@@ -125,6 +126,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 15px 0;
+  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.479);
 }
 
 #main #main__todo #main__todo_title {
@@ -137,24 +139,29 @@ body {
 }
 
 #main #main__todo #main__todo_input {
-  margin: 0 auto;
-  width: 80%;
+  width: 100%;
+}
+
+#main #main__todo #main__todo_input div {
   display: flex;
   -moz-column-gap: 10px;
        column-gap: 10px;
+  margin: 0 auto;
+  width: 80%;
 }
 
-#main #main__todo #main__todo_input #typeToDo {
-  padding: 10px 15px;
-  flex-grow: 2;
+#main #main__todo #main__todo_input div #typeToDo {
+  width: 100%;
+  padding: 5px 10px;
+  border: 2px solid rgb(2, 113, 187);
   text-align: center;
   font-size: 2rem;
 }
 
-#main #main__todo #main__todo_input #addToDo {
+#main #main__todo #main__todo_input div #addToDo {
   font-size: 1.5rem;
-  padding: 10px 20px;
-  background: blue;
+  padding: 5px 10px;
+  background: rgb(2, 113, 187);
   color: white;
 }
 
@@ -169,7 +176,9 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem {
+  position: relative;
   width: 80%;
+  font-size: 1.3rem;
   height: auto;
   padding: 10px 15px;
   margin: 10px auto;
@@ -178,7 +187,7 @@ body {
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   transition: background 0.3s ease-in-out, border 0.2s ease-in-out;
 }
 
@@ -220,7 +229,7 @@ body {
   content: "";
   position: absolute;
   left: -2.5rem;
-  top: -0.2rem;
+  top: -0.1rem;
   width: 1.5rem;
   height: 1.5rem;
   background: rgb(212, 212, 212);
@@ -239,4 +248,37 @@ body {
 #main #main__todo #main__todo_block .todoitem.done {
   background: rgb(221, 221, 221);
   border: 2px solid rgb(148, 148, 148);
+}
+
+@media screen and (max-width: 600px) {
+  #main #main__todo {
+    width: 450px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #main #main__todo {
+    width: 100%;
+    margin: 50px auto;
+  }
+
+  #main #main__todo #main__todo_title h2 {
+    font-size: 2rem;
+  }
+
+  #main #main__todo #main__todo_input div {
+    width: 95%;
+  }
+
+  #main #main__todo #main__todo_input div #typeToDo {
+    font-size: 1.3rem;
+  }
+
+  #main #main__todo #main__todo_input div #addToDo {
+    font-size: 1.3rem;
+  }
+
+  #main #main__todo #main__todo_block .todoitem {
+    width: 95%;
+  }
 }
