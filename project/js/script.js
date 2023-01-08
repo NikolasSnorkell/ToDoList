@@ -62,16 +62,18 @@ let todosCurrentObj = [];
 //--------------------------
 // определяем текующий день, месяц и год
 let date = new Date();
-let day = date.getDay();
+let day = date.getDate();
 let month = date.getMonth();
 let year = date.getFullYear();
 
-if (day < 10) day = `0${day + 1}`;
-else day += 1;
-if (month + 1 < 10) month = `0${month + 1}`;
+console.log(day)
+
+if (day < 10) day = `0${day}`;
+if ((month + 1) < 10) month = `0${month + 1}`;
 else month += 1;
 
 let final_date = `${day}-${month}-${year}`;
+
 $("#main__todo_title h2").html(final_date);
 // ----------------------------------
 // проверка существует ли Json файл и если его нет то создаем
