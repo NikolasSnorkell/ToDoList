@@ -109,6 +109,95 @@ body {
   box-sizing: border-box;
 }
 
+#main__sign {
+  overflow: hidden;
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/sign__back.png");
+  background-size: cover;
+  background-position: center;
+}
+
+#main__sign #main__sign_block {
+  width: 500px;
+  min-height: 400px;
+  height: 60vh;
+  background: linear-gradient(45deg, rgb(241, 241, 241), rgba(241, 241, 241, 0.788));
+  margin: 100px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#main__sign #main__sign_block #main__sign_title h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#main__sign #main__sign_block #main__sign_title p {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+#main__sign #main__sign_block #main__sign_choose {
+  display: flex;
+  justify-content: center;
+  -moz-column-gap: 1rem;
+       column-gap: 1rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+#main__sign #main__sign_block #main__sign_choose p {
+  border-bottom: 3px solid transparent;
+  transition: border 0.3s ease-in;
+}
+
+#main__sign #main__sign_block #main__sign_choose p:hover {
+  cursor: pointer;
+}
+
+#main__sign #main__sign_block #main__sign_choose p.sign__choose_checked {
+  border-bottom: 3px solid rgb(2, 113, 187);
+}
+
+#main__sign #main__sign_block #main__sign_login,
+#main__sign #main__sign_block #main__sign_register {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  align-items: center;
+}
+
+#main__sign #main__sign_block #main__sign_login input,
+#main__sign #main__sign_block #main__sign_register input {
+  width: 80%;
+  padding: 5px 10px;
+  border: 2px solid rgb(2, 113, 187);
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+#main__sign #main__sign_block #main__sign_login #login__send,
+#main__sign #main__sign_block #main__sign_login #reg__send,
+#main__sign #main__sign_block #main__sign_register #login__send,
+#main__sign #main__sign_block #main__sign_register #reg__send {
+  width: 40%;
+  color: white;
+  font-size: 1.4rem;
+  padding: 5px 10px;
+  background: rgb(2, 113, 187);
+}
+
+#main__sign #main__sign_block #main__sign_register {
+  display: none;
+}
+
 #main {
   overflow: hidden;
   padding: 15px;
