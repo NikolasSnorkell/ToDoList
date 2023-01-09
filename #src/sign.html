@@ -26,14 +26,14 @@
             </div>
 
             <div id="main__sign_login">
-                <input type="email" placeholder="Email" name="mail" id="login__mail">
-                <input type="password" name="pass" placeholder="Password" id="login__pass">
+                <input type="email" placeholder="Email" name="mail" id="login__mail" onblur="inputCheck(this)">
+                <input type="password" name="pass" placeholder="Password" id="login__pass" onblur="inputCheck(this)">
                 <button name="send_login" id="login__send">Login</button>
             </div>
             <div id="main__sign_register">
-                <input type="email" name="mail" placeholder="Email" id="reg__mail">
-                <input type="password" name="pass1" placeholder="Password" id="reg__pass1">
-                <input type="password" name="pass2" placeholder="Password Repeat" id="reg__pass2">
+                <input type="email" name="mail" placeholder="Email" id="reg__mail" onblur="inputCheck(this)">
+                <input type="password" name="pass1" placeholder="Password (5-10 characters)" id="reg__pass1" onblur="inputCheck(this)">
+                <input type="password" name="pass2" placeholder="Password Repeat" id="reg__pass2" onblur="inputCheck(this)">
                 <button name="send_reg" id="reg__send">Register</button></div>
 
         </div>
