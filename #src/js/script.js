@@ -3,7 +3,8 @@ new Sortable(document.querySelector("#main__todo_block"), {
   // store: true,
   dropBubble: true,
   direction: "vertical",
-  delay:1,
+  delay: 0.5,
+  delayOnTouchOnly: true,
   handle:".todoitem__handle",
   filter: ".sortable__block .done",
   forceFallback: true,
@@ -55,6 +56,8 @@ new Sortable(document.querySelector("#main__todo_block"), {
     // console.log(evt.item.children[0].className)
   },
 });
+
+
 
 let todosActive = [],
   todosDone = [];
@@ -149,11 +152,14 @@ function showToDos(arr) {
           todo.body
         }</label>
         </div>
-        <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
+        <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
     </div></div>`
     );
   }
 }
+
+// <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
+
 
 //----------------------------------
 
@@ -252,3 +258,12 @@ function sendToDos() {
 }
 
 // sendToDos();
+
+
+
+$('#main__todo_logout').click(function(){
+  localStorage.setItem("login","");
+  localStorage.setItem("pass","");
+
+  document.location.href = "index.html";
+})

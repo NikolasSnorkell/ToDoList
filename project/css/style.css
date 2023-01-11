@@ -132,14 +132,14 @@ body {
 }
 
 #main__sign #main__sign_block #main__sign_title h2 {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   margin-bottom: 1rem;
   text-align: center;
 }
 
 #main__sign #main__sign_block #main__sign_title p {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  font-size: 2.7rem;
+  margin-bottom: 5rem;
   text-align: center;
 }
 
@@ -211,6 +211,7 @@ body {
 }
 
 #main #main__todo {
+  position: relative;
   margin: 50px auto;
   width: 600px;
   height: 80vh;
@@ -219,6 +220,17 @@ body {
   flex-direction: column;
   padding: 15px 0;
   box-shadow: 0 5px 3px rgba(0, 0, 0, 0.479);
+}
+
+#main #main__todo #main__todo_logout {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 2rem;
+}
+
+#main #main__todo #main__todo_logout:hover {
+  cursor: pointer;
 }
 
 #main #main__todo #main__todo_title {
@@ -298,7 +310,7 @@ body {
        column-gap: 1rem;
   align-items: center;
   flex-grow: 1;
-  margin-right: 2rem;
+  margin-right: 2.5rem;
   margin-left: 1rem;
 }
 
@@ -332,7 +344,7 @@ body {
   content: "";
   position: absolute;
   left: -2.5rem;
-  top: 0.3rem;
+  top: 0rem;
   width: 1.5rem;
   height: 1.5rem;
   background: rgb(212, 212, 212);
@@ -340,11 +352,11 @@ body {
   transition: background 0.3s ease-in-out;
 }
 
-#main #main__todo #main__todo_block .todoitem .todoitem__trash {
-  width: 1.5rem;
+#main #main__todo #main__todo_block .todoitem .todoitem__settings {
+  width: 1.7rem;
 }
 
-#main #main__todo #main__todo_block .todoitem .todoitem__trash:hover {
+#main #main__todo #main__todo_block .todoitem .todoitem__settings:hover {
   cursor: pointer;
 }
 
@@ -356,6 +368,20 @@ body {
 @media screen and (max-width: 600px) {
   #main #main__todo {
     width: 450px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #main__sign #main__sign_block {
+    width: 400px;
+  }
+
+  #main__sign #main__sign_block #main__sign_title h2 {
+    font-size: 2.5rem;
+  }
+
+  #main__sign #main__sign_block #main__sign_title p {
+    font-size: 2rem;
   }
 }
 
@@ -383,5 +409,17 @@ body {
 
   #main #main__todo #main__todo_block .todoitem {
     width: 95%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #main__sign #main__sign_block {
+    width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  #main__sign #main__sign_block #main__sign_login,
+  #main__sign #main__sign_block #main__sign_register {
+    width: 90%;
   }
 }
