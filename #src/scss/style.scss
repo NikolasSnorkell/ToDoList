@@ -125,6 +125,7 @@ body {
 //-----------------------------------------------------------------
 
 #main {
+  user-select: none;
   overflow: hidden;
   padding: 15px;
   width: 100%;
@@ -133,7 +134,7 @@ body {
   background-size: contain;
 
   #main__todo {
-    margin: 100px auto;
+    margin: 50px auto;
     width: 600px;
     height: 80vh;
     background: rgb(241, 241, 241);
@@ -226,8 +227,7 @@ body {
         border: 2px solid rgb(2, 113, 187);
         position: relative;
         display: flex;
-        column-gap: 2rem;
-        // justify-content: space-between;
+        justify-content:flex-start ;
         align-items: flex-start;
         transition: background 0.3s ease-in-out, border 0.2s ease-in-out;
 
@@ -250,6 +250,8 @@ body {
           column-gap: 1rem;
           align-items: center;
           flex-grow: 1;
+          margin-right: 2rem;
+          margin-left: 1rem;
 
           .todoitem__check {
             opacity: 0.01;
