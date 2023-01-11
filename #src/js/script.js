@@ -3,7 +3,8 @@ new Sortable(document.querySelector("#main__todo_block"), {
   // store: true,
   dropBubble: true,
   direction: "vertical",
-
+  delay:1,
+  handle:".todoitem__handle",
   filter: ".sortable__block .done",
   forceFallback: true,
   fallbackClass: "sortable__block",
@@ -79,20 +80,26 @@ $("#main__todo_title h2").html(final_date);
 // проверка существует ли Json файл и если его нет то создаем
 
 function checkJson() {
-  $.get("php/checkJson.php", { date: final_date }, (response) =>
+  let loc_mail = localStorage.getItem("login");
+  $.post("php/checkJson.php", { date: final_date,"loc_mail":loc_mail  }, (response) =>
     console.log(response)
   );
 }
 
 checkJson();
 
+
+
+
+
 //--------------------------
 // получаем данные о делах с сервера
 
 function gettingJson() {
+  let loc_mail = localStorage.getItem("login");
   $.post(
     "php/getJson.php",
-    { aim: "get", date: final_date },
+    { aim: "get", date: final_date,"loc_mail":loc_mail },
     function (response) {
       response = JSON.parse(response);
       if (response[0] != null) todosActive = [...response[0]];
@@ -135,6 +142,7 @@ function showToDos(arr) {
         `<div class="sortable__block"><div class="todoitem ${class__item}" name="${
           index - shift
         }">
+        <img src="img/handle.png" alt="handle" class="todoitem__handle">
         <div class="todoitem__check_block">
         <input type="checkbox" class="todoitem__check" id="todo${index}">
         <label for="todo${index}" class="todoitem__label ${class__check}" onclick="markItem(this)">${
@@ -228,11 +236,14 @@ function transferItem(arr1, index1, arr2, status) {
 // отправка данных на сервер
 
 function sendToDos() {
+  let loc_mail = localStorage.getItem("login");
+
   let jsonString = {
     aim: "create/update",
     arr1: todosActive,
     arr2: todosDone,
     date: final_date,
+    loc_mail: loc_mail
   };
 
   $.post("php/updateJson.php", jsonString, function (response) {

@@ -1,10 +1,10 @@
 <?php
 $path = '../json/';
-$request = $_GET;
+$request = $_POST;
 
 
 
-    $filename = $path.$request['date'].'.json';
+    $filename = $path.$request['loc_mail'].'/'.$request['date'].'.json';
 
     if(file_exists($filename)){
 

@@ -11,50 +11,42 @@
 
 <body>
 
-    <main id="main">
+    <main id="main__sign">
 
+        <div id="main__sign_block">
 
-
-        <div id="main__todo">
-            <div id="main__todo_title">
-                <h2>31/12/2022</h2>
-            </div>
-            <div id="main__todo_input">
-                <div>
-                <input type="text" name="addToDo" id="typeToDo">
-                <button id="addToDo">Add</button>
-            </div>
+            <div id="main__sign_title">
+                <h2>Welcome!</h2>
+                <p>Please register or log-in</p>
             </div>
 
-            <div id="main__todo_block">
-                <!-- <div class="todoitem">
-                    Box 1
-                </div>
-                <div class="todoitem">
-                    Box 2
-                </div>
-                <div class="todoitem">
-                    Box 3
-                </div>
-                <div class="todoitem">
-                    Box 4
-                </div>
-                <div class="todoitem">
-                    Box 4
-                </div> -->
-       
-
+            <div id="main__sign_choose">
+                <p id="sign__choose_login" class="sign__choose_checked" onclick="sign_choose_change(0)">Login</p>
+                <p id="sign__choose_reg" onclick="sign_choose_change(1)">Register </p>
             </div>
+
+            <div id="main__sign_login">
+                <input type="email" placeholder="Email" name="mail" id="login__mail" onblur="inputCheck(this)">
+                <input type="password" name="pass" placeholder="Password" id="login__pass" onblur="inputCheck(this)">
+                <button name="send_login" id="login__send">Login</button>
+            </div>
+            <div id="main__sign_register">
+                <input type="email" name="mail" placeholder="Email" id="reg__mail" onblur="inputCheck(this)">
+                <input type="password" name="pass1" placeholder="Password (5-10 characters)" id="reg__pass1" onblur="inputCheck(this)">
+                <input type="password" name="pass2" placeholder="Password Repeat" id="reg__pass2" onblur="inputCheck(this)">
+                <button name="send_reg" id="reg__send">Register</button></div>
+
         </div>
+
+
 
 
     </main>
 
 
     <script src="js/jquery-3.6.0.min.js"></script>
-    <!-- Entire bundle -->
-    <script src="js/Sortable.min.js"></script>
-    <script src="js/script.js"></script>
+
+    <script src="js/script-sign.js"></script>
 </body>
 
 </html>

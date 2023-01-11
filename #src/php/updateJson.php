@@ -4,7 +4,7 @@ $request = $_POST;
 
 if ($request['aim'] == "create/update") {
 
-    $filename = $path.$request['date'].'.json';
+    $filename = $path.$request['loc_mail'].'/'.$request['date'].'.json';
 
     $jsonObj = [$request["arr1"], $request["arr2"]];
 

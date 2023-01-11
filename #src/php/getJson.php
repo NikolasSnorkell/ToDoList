@@ -4,7 +4,7 @@ $request = $_POST;
 
 if ($request['aim'] == "get") {
 
-    $filename = $path.$request['date'].'.json';
+    $filename = $path.$request['loc_mail'].'/'.$request['date'].'.json';
 
     $jsonString = file_get_contents($filename);
    
