@@ -171,6 +171,7 @@ function showToDos(arr) {
         }</label>
         </div>
         <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
+        <div class="setings_panel" id="panel-${class__item}${index - shift}" style="left: 100%"></div>
     </div></div>`
     );
   }
@@ -310,4 +311,26 @@ function  enterToDo(){
       addItem();
     }
   });
+}
+
+//------------------
+// функция открытия панели настроек
+
+function settingsItem(swich){
+    let id_parent = $(swich).parent().attr("name");
+    let id_needed = "";
+
+    if($(swich).parent().hasClass('done')){
+      id_needed =`#panel-done${id_parent}`
+    } else {
+     id_needed =`#panel-${id_parent}`
+    }
+
+    if(!$(id_needed).hasClass('opened')){
+       $(id_needed).toggleClass('opened');
+       $(id_needed).css('left',"0%");
+    }else{
+      $(id_needed).toggleClass('opened');
+      $(id_needed).css('left',"100%");
+    }
 }

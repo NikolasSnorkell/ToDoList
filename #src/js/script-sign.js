@@ -110,7 +110,7 @@ $("#reg__send").click(function () {
       if (response == "Exist") alert("This E-mail is in use!");
       else {
         localStorage.setItem("login",mail);
-        localStorage.setItem("pass",pass);
+       
 
         document.location.href = "todo.html";
       }
@@ -133,7 +133,7 @@ $("#login__send").click(function () {
     
       if(response == "logged"){
         localStorage.setItem("login",mail);
-        localStorage.setItem("pass",pass);
+       
         
         document.location.href = "todo.html";
       }

@@ -3,18 +3,6 @@
 $path = '../json/';
 $request = $_POST;
 
-// $message = "Something like that";
-// $key = random_bytes(SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
-// $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-// $ciphertext = sodium_crypto_secretbox($message,$nonce,$key);
-
-// $ciphertextBase64 = base64_encode($ciphertext);
-// $nonceBase64 = base64_encode($nonce);
-// $keyBase64 = base64_encode($key);
-
-// $plaintext2 = sodium_crypto_secretbox_open(base64_decode($ciphertextBase64), base64_decode($nonceBase64), base64_decode($keyBase64));
-
-// print_r($plaintext2);
 
 $ciphering = "AES-256-CTR"; //Метод шифрования
 $options = 0; 
