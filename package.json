@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "agnostic-draggable": "^1.4.5",
+    "openssl": "^2.0.0",
     "sortablejs": "^1.15.0"
   }
 }

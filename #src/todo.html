@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.min.css">
     <title>ToDo List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
             </div>
             <div id="main__todo_input">
                 <div>
-                <input type="text" name="addToDo" id="typeToDo">
+                <input type="text" name="addToDo" onfocus="enterToDo()" id="typeToDo">
                 <button id="addToDo">Add</button>
             </div>
             </div>
@@ -55,8 +56,10 @@
 
 
     <script src="js/jquery-3.6.0.min.js"></script>
+    <!-- <script src="js/aes.js"></script> -->
     <!-- Entire bundle -->
     <script src="js/Sortable.min.js"></script>
+    
     <script src="js/script.js"></script>
 </body>
 

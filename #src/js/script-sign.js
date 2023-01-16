@@ -40,7 +40,7 @@ let check_flag = 0; // по этому флагу определяется вы�
 
 function inputCheck(elem) {
   let regexp_mail = /^[a-z0-9_-]+@[a-z]+\.{1}[a-z]{2,3}$/;
-  let regexp_pass = /^\w{5,10}$/;
+  let regexp_pass = /^\w{5,16}$/;
   let uni_regexp;
 
   if (

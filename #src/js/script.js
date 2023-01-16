@@ -1,3 +1,8 @@
+if(localStorage.getItem("login")==""){
+  document.location.href = "index.html";
+}
+
+
 new Sortable(document.querySelector("#main__todo_block"), {
   sortable: true,
   // store: true,
@@ -27,9 +32,9 @@ new Sortable(document.querySelector("#main__todo_block"), {
     sendToDos();
   },
   onEnd: function (/**Event*/ evt) {
+    console.log(todosActive);
     evt.newIndex;
     let temp;
-
     if (evt.oldIndex != evt.newIndex) {
       if (evt.newIndex >= todosActive.length) {
         evt.newIndex = todosActive.length - 1;
@@ -37,25 +42,30 @@ new Sortable(document.querySelector("#main__todo_block"), {
       if (evt.oldIndex >= todosActive.length) {
         evt.oldIndex = todosActive.length - 1;
       }
-      console.log(evt.oldIndex + " " + evt.newIndex);
+      
+      // console.log(evt.oldIndex + " " + evt.newIndex);
       temp = todosActive[evt.newIndex].body;
       todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body;
       todosActive[evt.oldIndex].body = temp;
 
       let tempArr = $(".todoitem ").not(".todoitem.done");
-
+      
       for ([index, todo] of todosActive.entries()) {
+        
         todo.body = tempArr[index].innerText;
-      }
-
-      // console.log(todosActive);
-      sendToDos();
+       
+      
+      }     
+     sendToDos();
     }
 
     // sendToDos();
     // console.log(evt.item.children[0].className)
   },
 });
+
+
+
 
 
 
@@ -82,15 +92,15 @@ $("#main__todo_title h2").html(final_date);
 // ----------------------------------
 // проверка существует ли Json файл и если его нет то создаем
 
-function checkJson() {
+async function checkJson() {
   let loc_mail = localStorage.getItem("login");
   $.post("php/checkJson.php", { date: final_date,"loc_mail":loc_mail  }, (response) =>
     console.log(response)
   );
 }
 
-checkJson();
-
+// присваивание переменноф выходного из async функции промиса
+let checkedJsonPromise = checkJson();
 
 
 
@@ -100,31 +110,39 @@ checkJson();
 
 function gettingJson() {
   let loc_mail = localStorage.getItem("login");
-  $.post(
+  // запуск запроса получения json'а только после проверки его наличия
+  checkedJsonPromise.then( $.post(
     "php/getJson.php",
     { aim: "get", date: final_date,"loc_mail":loc_mail },
     function (response) {
+      // console.log(response);
       response = JSON.parse(response);
       if (response[0] != null) todosActive = [...response[0]];
       else todosActive = [];
       if (response[1] != null) todosDone = [...response[1]];
       else todosDone = [];
-      // console.log(todosActive);
+
+
+       
       // вызов функции показа всех дел
       showToDos([...todosActive, ...todosDone]);
+      // console.log(todosActive);
     }
-  );
+  ));
 }
 
-gettingJson();
+gettingJson()
 
 //----------------------------
 // функция показа всех имеющихся дел, как сделанных так и активных
 
 function showToDos(arr) {
   $("#main__todo_block").html("");
-
+ 
   for ([index, todo] of arr.entries()) {
+
+
+
     let class__check,
       class__item,
       shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
@@ -156,6 +174,9 @@ function showToDos(arr) {
     </div></div>`
     );
   }
+
+
+ 
 }
 
 // <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
@@ -177,8 +198,16 @@ function showToDos(arr) {
 //     status: "done",
 // }, ];
 
+
+
+
 // слушатель для добавления нового дела в список
-$("#addToDo").click(function () {
+$("#addToDo").click(addItem);
+
+//------------------------------------
+// функция добавления дела
+
+function addItem() {
   let toDoText = $("#typeToDo").val();
   if (toDoText != "" && toDoText != " ") {
     $("#typeToDo").val("");
@@ -186,10 +215,13 @@ $("#addToDo").click(function () {
       body: `${toDoText}`,
       status: "active",
     });
+
+    showToDos([...todosActive, ...todosDone]);
+   sendToDos();
   }
-  showToDos([...todosActive, ...todosDone]);
-  sendToDos();
-});
+ 
+
+}
 //------------------------------------
 // функция удаления дела
 function delItem(elem) {
@@ -267,3 +299,15 @@ $('#main__todo_logout').click(function(){
 
   document.location.href = "index.html";
 })
+
+
+//------------
+// функция назначающая Enter для добавления дела
+
+function  enterToDo(){
+  $(document).keyup(function(e) {
+    if (e.key === "Enter") {
+      addItem();
+    }
+  });
+}

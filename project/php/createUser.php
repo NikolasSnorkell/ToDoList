@@ -2,9 +2,14 @@
 $path = '../json/';
 $request = $_POST;
 
+
+
+
+
 if($request['mail']){
 $mail = $request['mail'];
-$pass = $request['pass'];
+$hash_pass = password_hash($request["pass"],PASSWORD_DEFAULT);
+
     if(is_dir($path.$mail)==false){
         mkdir($path.$mail, 0777);
         print_r("Created dir");
@@ -13,7 +18,7 @@ $pass = $request['pass'];
         $json = json_decode(file_get_contents($path."users.json"), true);
 
         $obj["mail"] = $mail;
-        $obj["password"] = $pass;
+        $obj["password"] = $hash_pass;
     
        array_push($json, $obj);
         
