@@ -1,8 +1,10 @@
 
 if(localStorage.getItem('login')==""){
   localStorage.setItem("login","");
-  localStorage.setItem("pass","");
+} else {
+  document.location.href = "todo.html";
 }
+
 
 
 

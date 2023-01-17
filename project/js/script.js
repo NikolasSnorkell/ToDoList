@@ -133,6 +133,14 @@ function gettingJson() {
 
 gettingJson()
 
+var todoitem_colors = {
+  blue:"background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
+  yellow:"background: rgb(239,247,169); border: 2px solid rgb(175, 187, 2)",
+  red:"background: rgb(247,169,169); border: 2px solid rgb(187, 24, 2)",
+  green:"background: rgb(169,247,169); border: 2px solid rgb(24, 187, 2)",
+} // массив цветов и границ для дел
+
+
 //----------------------------
 // функция показа всех имеющихся дел, как сделанных так и активных
 
@@ -145,6 +153,10 @@ function showToDos(arr) {
 
     let class__check,
       class__item,
+      picker_choose_1="",
+      picker_choose_2="",
+      picker_choose_3="",
+      picker_choose_4="",
       shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
 
     // проверка статуса дела
@@ -158,11 +170,30 @@ function showToDos(arr) {
       shift = 0;
     }
 
+    switch (todo.color){
+      case "blue":
+          picker_choose_1 = " choosen";
+          break
+      case "yellow":
+          picker_choose_2 = " choosen";
+          break
+      case "red":
+          picker_choose_3 = " choosen";
+          break
+      case "green":
+          picker_choose_4 = " choosen";
+          break
+
+    }
+
+
+
+
     $("#main__todo_block").html(
       $("#main__todo_block").html() +
         `<div class="sortable__block"><div class="todoitem ${class__item}" name="${
           index - shift
-        }">
+        }" style="${todoitem_colors[todo.color]}">
         <img src="img/handle.png" alt="handle" class="todoitem__handle">
         <div class="todoitem__check_block">
         <input type="checkbox" class="todoitem__check" id="todo${index}">
@@ -171,9 +202,21 @@ function showToDos(arr) {
         }</label>
         </div>
         <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
-        <div class="setings_panel" id="panel-${class__item}${index - shift}" style="left: 100%"></div>
+        <div class="setings_panel" id="panel-${class__item}${index - shift}" style="left: 100%">
+        <div class="settings__trash_block"  onclick="delItem(this)">
+        <img src="img/trash.png" class="todoitem__settings" alt="todosettings">
+        </div>
+        <div class="settings__colors_block">
+          <span class="colorpick blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
+          <span class="colorpick yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
+          <span class="colorpick red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
+          <span class="colorpick green${picker_choose_4}" onclick="colorPick(this)" name="green"></span>
+        </div>
+        </div>
     </div></div>`
     );
+
+
   }
 
 
@@ -185,19 +228,7 @@ function showToDos(arr) {
 
 //----------------------------------
 
-// todosActive = [{
-//         body: "Draw the vehicle",
-//         status: "active"
-//     },
-//     {
-//         body: "Wash the dishes",
-//         status: "active"
-//     },
-// ];
-// todosDone = [{
-//     body: "Create project",
-//     status: "done",
-// }, ];
+
 
 
 
@@ -215,6 +246,7 @@ function addItem() {
     todosActive.push({
       body: `${toDoText}`,
       status: "active",
+      color:"blue"
     });
 
     showToDos([...todosActive, ...todosDone]);
@@ -226,10 +258,10 @@ function addItem() {
 //------------------------------------
 // функция удаления дела
 function delItem(elem) {
-  let parent_id = $(elem).parent("div").attr("name"); // получение id из поля
+  let parent_elem = $(elem).parent().parent();
+  let parent_id = $(parent_elem).attr("name"); // получение id из поля
   // name в todoitem
-
-  if ($(elem).parent("div").hasClass("done")) {
+  if ($(parent_elem).hasClass("done")) {
     // выбор нужного массива из которого нужно удалить элемент
     todosDone.splice(parent_id, 1);
   } else {
@@ -259,11 +291,13 @@ function markItem(elem) {
 // функция для
 function transferItem(arr1, index1, arr2, status) {
   let tempBody = arr1[index1].body;
+  let tempColor = arr1[index1].color;
 
   arr1.splice(index1, 1);
   arr2.push({
     body: `${tempBody}`,
     status: `${status}`,
+    color : tempColor
   });
   // console.log(arr1);
   // console.log(arr2);
@@ -333,4 +367,33 @@ function settingsItem(swich){
       $(id_needed).toggleClass('opened');
       $(id_needed).css('left',"100%");
     }
+}
+
+
+
+//------------------------
+// функция выбора цвета дела
+
+function colorPick(elem){
+  const pick_parent = $(elem).parent().parent().parent();
+  const pick_parent_id = $(elem).parent().parent().parent().attr("name");
+  const pick_color = $(elem).attr("name");
+  let todoitem_colors_items = $(elem).siblings(".colorpick");
+  todoitem_colors_items.push(elem);
+
+  for(pick of todoitem_colors_items){
+    $(pick).removeClass("choosen");
+
+  }
+console.log(pick_parent)
+  $(elem).addClass("choosen");
+
+  $(pick_parent).attr("style",todoitem_colors[pick_color]);
+
+  if($(pick_parent).hasClass("done")){
+    todosDone[pick_parent_id].color = pick_color;
+  } else {
+    todosActive[pick_parent_id].color = pick_color;
+  }
+  sendToDos();
 }
