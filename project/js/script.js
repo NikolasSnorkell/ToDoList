@@ -3,6 +3,7 @@ if(localStorage.getItem("login")==""){
 }
 
 
+
 new Sortable(document.querySelector("#main__todo_block"), {
   sortable: true,
   // store: true,
@@ -34,7 +35,7 @@ new Sortable(document.querySelector("#main__todo_block"), {
   onEnd: function (/**Event*/ evt) {
     console.log(todosActive);
     evt.newIndex;
-    let temp;
+    let tempText,tempColor;
     if (evt.oldIndex != evt.newIndex) {
       if (evt.newIndex >= todosActive.length) {
         evt.newIndex = todosActive.length - 1;
@@ -44,9 +45,12 @@ new Sortable(document.querySelector("#main__todo_block"), {
       }
       
       // console.log(evt.oldIndex + " " + evt.newIndex);
-      temp = todosActive[evt.newIndex].body;
+      tempText = todosActive[evt.newIndex].body;
+      tempColor = todosActive[evt.newIndex].color;
       todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body;
-      todosActive[evt.oldIndex].body = temp;
+      todosActive[evt.newIndex].color = todosActive[evt.oldIndex].color;
+      todosActive[evt.oldIndex].body = tempText;
+      todosActive[evt.oldIndex].color = tempColor;
 
       let tempArr = $(".todoitem ").not(".todoitem.done");
       
@@ -65,10 +69,6 @@ new Sortable(document.querySelector("#main__todo_block"), {
 });
 
 
-
-
-
-
 let todosActive = [],
   todosDone = [];
 let todosCurrentObj = [];
@@ -80,27 +80,39 @@ let day = date.getDate();
 let month = date.getMonth();
 let year = date.getFullYear();
 
-console.log(day)
+
 
 if (day < 10) day = `0${day}`;
 if ((month + 1) < 10) month = `0${month + 1}`;
 else month += 1;
 
-let final_date = `${day}-${month}-${year}`;
+let system_date = `${year}-${month}-${day}`;
 
-$("#main__todo_title h2").html(final_date);
+
+function showDate(dateVar){
+
+  let tempDate = dateVar.split("-");
+  if(tempDate[0].length>2) dateVar = tempDate[2]+"-"+tempDate[1]+"-"+tempDate[0];
+   else  dateVar = tempDate.join("-");
+  
+
+  $("#main__todo_title h2").html(dateVar);
+}
+
+showDate(system_date);
+
 // ----------------------------------
 // проверка существует ли Json файл и если его нет то создаем
 
-async function checkJson() {
+async function checkJson(dateVar) {
   let loc_mail = localStorage.getItem("login");
-  $.post("php/checkJson.php", { date: final_date,"loc_mail":loc_mail  }, (response) =>
+  $.post("php/checkJson.php", { date: dateVar,"loc_mail":loc_mail  }, (response) =>
     console.log(response)
   );
 }
 
 // присваивание переменноф выходного из async функции промиса
-let checkedJsonPromise = checkJson();
+let checkedJsonPromise = checkJson(system_date);
 
 
 
@@ -108,12 +120,12 @@ let checkedJsonPromise = checkJson();
 //--------------------------
 // получаем данные о делах с сервера
 
-function gettingJson() {
+function gettingJson(dateVar) {
   let loc_mail = localStorage.getItem("login");
   // запуск запроса получения json'а только после проверки его наличия
   checkedJsonPromise.then( $.post(
     "php/getJson.php",
-    { aim: "get", date: final_date,"loc_mail":loc_mail },
+    { aim: "get", date: dateVar,"loc_mail":loc_mail },
     function (response) {
       // console.log(response);
       response = JSON.parse(response);
@@ -131,7 +143,38 @@ function gettingJson() {
   ));
 }
 
-gettingJson()
+gettingJson(system_date);
+
+//--------------------
+// функция инициализации календаря
+
+document.addEventListener('DOMContentLoaded', () => {
+  const calendar = new VanillaCalendar('#calendar',{
+    settings: {
+      range: {
+        min: '2023-01-01',
+      }
+    },
+    actions: {
+      clickDay(event, dates) {
+        system_date = dates[0];
+        checkedJsonPromise = checkJson(system_date);
+        gettingJson(system_date);
+        showDate(system_date);
+        //console.log(system_date);
+      },
+    },
+  });
+  calendar.init();
+});
+
+// $('#calendar__block').slideUp(0);
+
+$('#main__todo_title h2').click(function(){
+  $('#calendar__block').toggleClass("shown");
+  // $('#calendar__block').slideToggle(1000);
+})
+
 
 var todoitem_colors = {
   blue:"background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
@@ -315,7 +358,7 @@ function sendToDos() {
     aim: "create/update",
     arr1: todosActive,
     arr2: todosDone,
-    date: final_date,
+    date: system_date,
     loc_mail: loc_mail
   };
 

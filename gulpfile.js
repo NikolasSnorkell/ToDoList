@@ -20,6 +20,7 @@ let path = {
         php:source_folder+"/php/**/*",
         json:source_folder+"/json/**/*",
         css:source_folder+"/scss/style.scss",
+        vanCss:source_folder+"/scss/*.css",
         js:source_folder+"/js/**/*",
         jq:source_folder+"/js/jquery-3.6.0.min.js",
         img:source_folder+"/img/**/*.{jpg,png,svg,gif,ico,webp}",
@@ -30,6 +31,7 @@ let path = {
         php:source_folder+"/php/**/*.php",
         json:source_folder+"/json/**/*.json",
         css:source_folder+"/scss/**/*.scss",
+        vanCss:source_folder+"/css/**/*.css",
         js:source_folder+"/js/**/*.js",
         img:source_folder+"/img/**/*.{jpg,png,svg,gif,ico,webp}",
     },
@@ -84,6 +86,12 @@ function php(){
 function json(){
     return src(path.src.json)
         .pipe(dest(path.build.json))
+        .pipe(browsersync.stream())
+}
+
+function vanCss(){
+    return src(path.src.vanCss)
+        .pipe(dest(path.build.css))
         .pipe(browsersync.stream())
 }
 
@@ -169,6 +177,7 @@ function watchFiles(){
     gulp.watch([path.watch.php],php);
     gulp.watch([path.watch.json],json);
     gulp.watch([path.watch.css],css);
+    gulp.watch([path.watch.vanCss],vanCss);
     gulp.watch([path.watch.js],js);
     gulp.watch([path.watch.img],images);
 }
@@ -181,7 +190,7 @@ function clean(){
 
 
 
-let build = gulp.series(clean,gulp.parallel(js,css,html,json,php,images,fonts));
+let build = gulp.series(clean,gulp.parallel(js,css,html,vanCss,json,php,images,fonts));
 let watch = gulp.parallel(build,watchFiles,browserSync);
 
 
@@ -190,6 +199,7 @@ exports.html = html;
 exports.fonts = fonts;
 exports.images = images;
 exports.css = css;
+exports.vanCss = vanCss;
 exports.php = php;
 exports.json = json;
 exports.js =js;

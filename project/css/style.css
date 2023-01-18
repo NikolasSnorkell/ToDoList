@@ -227,6 +227,7 @@ body {
   top: 1rem;
   left: 1rem;
   width: 2rem;
+  z-index: 10;
 }
 
 #main #main__todo #main__todo_logout:hover {
@@ -234,12 +235,47 @@ body {
 }
 
 #main #main__todo #main__todo_title {
+  position: relative;
   padding: 10px;
-  text-align: center;
 }
 
 #main #main__todo #main__todo_title h2 {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
   font-size: 2.5rem;
+  text-decoration: underline;
+}
+
+#main #main__todo #main__todo_title h2:hover {
+  cursor: pointer;
+}
+
+#main #main__todo #calendar__block {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease-in-out;
+}
+
+#main #main__todo #calendar__block.shown {
+  height: 650px;
+}
+
+#main #main__todo #calendar__block #calendar {
+  margin: 0 auto 2rem;
+  z-index: 10;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_weekend {
+  color: rgb(35, 161, 245);
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-week__day_weekend {
+  color: rgb(2, 113, 187);
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_selected {
+  background: rgb(0, 59, 99);
 }
 
 #main #main__todo #main__todo_input {

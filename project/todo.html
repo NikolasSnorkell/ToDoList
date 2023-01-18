@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="css/style.min.css">
     <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
+       <!-- Plugin CSS -->
+       <link href="css/vanilla-calendar.min.css" rel="stylesheet">
+       <!-- Plugin JS -->
+       <script src="js/vanilla-calendar.min.js" defer></script>
     <title>ToDo List</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
@@ -19,14 +23,15 @@
 
     <main id="main">
 
-
-
         <div id="main__todo">
 
             <img src="img/logout.png" alt="logout" id="main__todo_logout">
 
             <div id="main__todo_title">
                 <h2>31/12/2022</h2>
+            </div>
+            <div id="calendar__block">
+                <div id="calendar"></div>
             </div>
             <div id="main__todo_input">
                 <div>
