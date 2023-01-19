@@ -183,6 +183,11 @@ body {
   font-size: 1.1rem;
 }
 
+#main__sign #main__sign_block #main__sign_login input.red_border,
+#main__sign #main__sign_block #main__sign_register input.red_border {
+  border: 2px solid rgb(255, 0, 0);
+}
+
 #main__sign #main__sign_block #main__sign_login #login__send,
 #main__sign #main__sign_block #main__sign_login #reg__send,
 #main__sign #main__sign_block #main__sign_register #login__send,
@@ -254,11 +259,11 @@ body {
 #main #main__todo #calendar__block {
   height: 0;
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
+  transition: height 0.2s ease-in-out;
 }
 
 #main #main__todo #calendar__block.shown {
-  height: 650px;
+  height: 700px;
 }
 
 #main #main__todo #calendar__block #calendar {
@@ -280,6 +285,7 @@ body {
 
 #main #main__todo #main__todo_input {
   width: 100%;
+  margin-top: 2rem;
 }
 
 #main #main__todo #main__todo_input div {

@@ -117,6 +117,10 @@ body {
         border: 2px solid rgb(2, 113, 187);
         text-align: center;
         font-size: 1.1rem;
+
+        &.red_border{
+          border: 2px solid rgb(255,0,0);
+        }
       }
       #login__send,
       #reg__send {
@@ -211,9 +215,11 @@ body {
     #calendar__block{
       height: 0;
       overflow: hidden;
-      transition: height .3s ease-in-out;
+     
+      transition: height .2s ease-in-out;
       &.shown{
-        height: 650px;
+        // min-height: 280px;
+        height: 700px;
       }
      
     #calendar{
@@ -234,6 +240,7 @@ body {
 
     #main__todo_input {
       width: 100%;
+      margin-top: 2rem;
 
       // @media screen and (max-width:600px){
       //   max-width: 100%;
