@@ -1,17 +1,27 @@
-if(localStorage.getItem("login")==""){
+if (localStorage.getItem("login") == "") {
   document.location.href = "index.html";
 }
 
+var todoitem_colors = {
+  blue: "background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
+  yellow: "background: rgb(239,247,169); border: 2px solid rgb(175, 187, 2)",
+  red: "background: rgb(247,169,169); border: 2px solid rgb(187, 24, 2)",
+  green: "background: rgb(169,247,169); border: 2px solid rgb(24, 187, 2)",
+  pink: "background: rgb(247, 169, 247); border: 2px solid rgb(201, 0, 201)",
+}; // массив цветов и границ для дел
 
+let id_destination;
 
 new Sortable(document.querySelector("#main__todo_block"), {
+  group: "todolist",
+  swapThreshold: 1,
   sortable: true,
   // store: true,
   dropBubble: true,
   direction: "vertical",
   delay: 0.5,
   delayOnTouchOnly: true,
-  handle:".todoitem__handle",
+  handle: ".todoitem__handle",
   filter: ".sortable__block .done",
   forceFallback: true,
   fallbackClass: "sortable__block",
@@ -32,10 +42,35 @@ new Sortable(document.querySelector("#main__todo_block"), {
   onUpdate: function (/**Event*/ evt) {
     sendToDos();
   },
+  onChoose: function (/**Event*/ evt) {
+    $("#trash__field").css({ width: "50%" });
+  },
+  onMove: function (/**Event*/ evt) {
+    // console.log(evt.related);
+    if ($(evt.related).attr("id") == "trash_list") {
+      $("#trash__field").addClass("overit");
+    } else {
+      $("#trash__field").removeClass("overit");
+    }
+    id_destination = $(evt.related).attr("id");
+  },
+  onUnchoose: function (/**Event*/ evt) {
+    if (id_destination == "trash_list") {
+      $("#trash_list_remover").toggleClass("toggled");
+      setTimeout(() => {
+         delItem($(evt.item).children()[0]);
+        $("#trash_list").html("");
+        $("#trash__field").removeClass("overit");
+      }, 200);
+      $("#trash_list_remover").toggleClass("toggled");
+    }
+  
+    $("#trash__field").css("width", "50px");
+  },
   onEnd: function (/**Event*/ evt) {
-    console.log(todosActive);
-    evt.newIndex;
-    let tempText,tempColor;
+  
+    if(id_destination!="trash_list"){
+    let tempText, tempColor;
     if (evt.oldIndex != evt.newIndex) {
       if (evt.newIndex >= todosActive.length) {
         evt.newIndex = todosActive.length - 1;
@@ -43,7 +78,7 @@ new Sortable(document.querySelector("#main__todo_block"), {
       if (evt.oldIndex >= todosActive.length) {
         evt.oldIndex = todosActive.length - 1;
       }
-      
+
       // console.log(evt.oldIndex + " " + evt.newIndex);
       tempText = todosActive[evt.newIndex].body;
       tempColor = todosActive[evt.newIndex].color;
@@ -51,23 +86,24 @@ new Sortable(document.querySelector("#main__todo_block"), {
       todosActive[evt.newIndex].color = todosActive[evt.oldIndex].color;
       todosActive[evt.oldIndex].body = tempText;
       todosActive[evt.oldIndex].color = tempColor;
-
-      let tempArr = $(".todoitem ").not(".todoitem.done");
-      
-      for ([index, todo] of todosActive.entries()) {
-        
-        todo.body = tempArr[index].innerText;
-       
-      
-      }     
-     sendToDos();
     }
-
+      let tempArr = $(".todoitem ").not(".todoitem.done");
+      for ([index, todo] of todosActive.entries()) {
+        todo.body = tempArr[index].innerText;
+      }
+        
+      sendToDos();
+    }
+    console.log(todosActive);
     // sendToDos();
     // console.log(evt.item.children[0].className)
   },
 });
 
+new Sortable(document.querySelector("#trash_list"), {
+  group: "todolist",
+  swapThreshold: 1,
+});
 
 let todosActive = [],
   todosDone = [];
@@ -80,21 +116,17 @@ let day = date.getDate();
 let month = date.getMonth();
 let year = date.getFullYear();
 
-
-
 if (day < 10) day = `0${day}`;
-if ((month + 1) < 10) month = `0${month + 1}`;
+if (month + 1 < 10) month = `0${month + 1}`;
 else month += 1;
 
 let system_date = `${year}-${month}-${day}`;
 
-
-function showDate(dateVar){
-
+function showDate(dateVar) {
   let tempDate = dateVar.split("-");
-  if(tempDate[0].length>2) dateVar = tempDate[2]+"-"+tempDate[1]+"-"+tempDate[0];
-   else  dateVar = tempDate.join("-");
-  
+  if (tempDate[0].length > 2)
+    dateVar = tempDate[2] + "-" + tempDate[1] + "-" + tempDate[0];
+  else dateVar = tempDate.join("-");
 
   $("#main__todo_title h2").html(dateVar);
 }
@@ -106,16 +138,15 @@ showDate(system_date);
 
 async function checkJson(dateVar) {
   let loc_mail = localStorage.getItem("login");
-  $.post("php/checkJson.php", { date: dateVar,"loc_mail":loc_mail  }, (response) =>
-    console.log(response)
+  $.post(
+    "php/checkJson.php",
+    { date: dateVar, loc_mail: loc_mail },
+    (response) => console.log(response)
   );
 }
 
 // присваивание переменноф выходного из async функции промиса
 let checkedJsonPromise = checkJson(system_date);
-
-
-
 
 //--------------------------
 // получаем данные о делах с сервера
@@ -123,24 +154,24 @@ let checkedJsonPromise = checkJson(system_date);
 function gettingJson(dateVar) {
   let loc_mail = localStorage.getItem("login");
   // запуск запроса получения json'а только после проверки его наличия
-  checkedJsonPromise.then( $.post(
-    "php/getJson.php",
-    { aim: "get", date: dateVar,"loc_mail":loc_mail },
-    function (response) {
-      // console.log(response);
-      response = JSON.parse(response);
-      if (response[0] != null) todosActive = [...response[0]];
-      else todosActive = [];
-      if (response[1] != null) todosDone = [...response[1]];
-      else todosDone = [];
+  checkedJsonPromise.then(
+    $.post(
+      "php/getJson.php",
+      { aim: "get", date: dateVar, loc_mail: loc_mail },
+      function (response) {
+        // console.log(response);
+        response = JSON.parse(response);
+        if (response[0] != null) todosActive = [...response[0]];
+        else todosActive = [];
+        if (response[1] != null) todosDone = [...response[1]];
+        else todosDone = [];
 
-
-       
-      // вызов функции показа всех дел
-      showToDos([...todosActive, ...todosDone]);
-      // console.log(todosActive);
-    }
-  ));
+        // вызов функции показа всех дел
+        showToDos([...todosActive, ...todosDone]);
+        // console.log(todosActive);
+      }
+    )
+  );
 }
 
 gettingJson(system_date);
@@ -148,12 +179,12 @@ gettingJson(system_date);
 //--------------------
 // функция инициализации календаря
 
-document.addEventListener('DOMContentLoaded', () => {
-  const calendar = new VanillaCalendar('#calendar',{
+document.addEventListener("DOMContentLoaded", () => {
+  const calendar = new VanillaCalendar("#calendar", {
     settings: {
       range: {
-        min: '2023-01-01',
-      }
+        min: "2023-01-01",
+      },
     },
     actions: {
       clickDay(event, dates) {
@@ -170,18 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // $('#calendar__block').slideUp(0);
 
-$('#main__todo_title h2').click(function(){
-  $('#calendar__block').toggleClass("shown");
+$("#main__todo_title h2").click(function () {
+  $("#calendar__block").toggleClass("shown");
   // $('#calendar__block').slideToggle(1000);
-})
+});
 
-
-var todoitem_colors = {
-  blue:"background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
-  yellow:"background: rgb(239,247,169); border: 2px solid rgb(175, 187, 2)",
-  red:"background: rgb(247,169,169); border: 2px solid rgb(187, 24, 2)",
-  green:"background: rgb(169,247,169); border: 2px solid rgb(24, 187, 2)",
-} // массив цветов и границ для дел
 
 
 //----------------------------
@@ -189,17 +213,15 @@ var todoitem_colors = {
 
 function showToDos(arr) {
   $("#main__todo_block").html("");
- 
+
   for ([index, todo] of arr.entries()) {
-
-
-
     let class__check,
       class__item,
-      picker_choose_1="",
-      picker_choose_2="",
-      picker_choose_3="",
-      picker_choose_4="",
+      picker_choose_1 = "",
+      picker_choose_2 = "",
+      picker_choose_3 = "",
+      picker_choose_4 = "",
+      picker_choose_5 = "",
       shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
 
     // проверка статуса дела
@@ -213,28 +235,27 @@ function showToDos(arr) {
       shift = 0;
     }
 
-    switch (todo.color){
+    switch (todo.color) {
       case "blue":
-          picker_choose_1 = " choosen";
-          break
+        picker_choose_1 = " choosen";
+        break;
       case "yellow":
-          picker_choose_2 = " choosen";
-          break
+        picker_choose_2 = " choosen";
+        break;
       case "red":
-          picker_choose_3 = " choosen";
-          break
+        picker_choose_3 = " choosen";
+        break;
       case "green":
-          picker_choose_4 = " choosen";
-          break
-
+        picker_choose_4 = " choosen";
+        break;
+      case "pink":
+        picker_choose_5 = " choosen";
+        break;
     }
-
-
-
 
     $("#main__todo_block").html(
       $("#main__todo_block").html() +
-        `<div class="sortable__block"><div class="todoitem ${class__item}" name="${
+        `<div class="sortable__block"  data-anijs="if: click, do: flipInY animated"><div class="todoitem ${class__item}" name="${
           index - shift
         }" style="${todoitem_colors[todo.color]}">
         <img src="img/handle.png" alt="handle" class="todoitem__handle">
@@ -245,7 +266,9 @@ function showToDos(arr) {
         }</label>
         </div>
         <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
-        <div class="setings_panel" id="panel-${class__item}${index - shift}" style="left: 100%">
+        <div class="setings_panel" id="panel-${class__item}${
+          index - shift
+        }" style="left: 100%">
         <div class="settings__trash_block"  onclick="delItem(this)">
         <img src="img/trash.png" class="todoitem__settings" alt="todosettings">
         </div>
@@ -254,27 +277,17 @@ function showToDos(arr) {
           <span class="colorpick yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
           <span class="colorpick red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
           <span class="colorpick green${picker_choose_4}" onclick="colorPick(this)" name="green"></span>
+          <span class="colorpick pink${picker_choose_5}" onclick="colorPick(this)" name="pink"></span>
         </div>
         </div>
     </div></div>`
     );
-
-
   }
-
-
- 
 }
 
 // <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
 
-
 //----------------------------------
-
-
-
-
-
 
 // слушатель для добавления нового дела в список
 $("#addToDo").click(addItem);
@@ -289,27 +302,35 @@ function addItem() {
     todosActive.push({
       body: `${toDoText}`,
       status: "active",
-      color:"blue"
+      color: "blue",
     });
 
     showToDos([...todosActive, ...todosDone]);
-   sendToDos();
+    sendToDos();
   }
- 
-
 }
 //------------------------------------
 // функция удаления дела
 function delItem(elem) {
   let parent_elem = $(elem).parent().parent();
-  let parent_id = $(parent_elem).attr("name"); // получение id из поля
+  let parent_id = $(elem).attr("name"); // получение id из поля
   // name в todoitem
-  if ($(parent_elem).hasClass("done")) {
+  if ($(elem).hasClass("done")) {
     // выбор нужного массива из которого нужно удалить элемент
     todosDone.splice(parent_id, 1);
   } else {
     todosActive.splice(parent_id, 1);
   }
+
+  // let parent_elem = $(elem).parent().parent();
+  // let parent_id = $(parent_elem).attr("name"); // получение id из поля
+  // // name в todoitem
+  // if ($(parent_elem).hasClass("done")) {
+  //   // выбор нужного массива из которого нужно удалить элемент
+  //   todosDone.splice(parent_id, 1);
+  // } else {
+  //   todosActive.splice(parent_id, 1);
+  // }
 
   showToDos([...todosActive, ...todosDone]);
   // console.log(todosCurrentObj);
@@ -340,7 +361,7 @@ function transferItem(arr1, index1, arr2, status) {
   arr2.push({
     body: `${tempBody}`,
     status: `${status}`,
-    color : tempColor
+    color: tempColor,
   });
   // console.log(arr1);
   // console.log(arr2);
@@ -359,7 +380,7 @@ function sendToDos() {
     arr1: todosActive,
     arr2: todosDone,
     date: system_date,
-    loc_mail: loc_mail
+    loc_mail: loc_mail,
   };
 
   $.post("php/updateJson.php", jsonString, function (response) {
@@ -369,21 +390,18 @@ function sendToDos() {
 
 // sendToDos();
 
-
-
-$('#main__todo_logout').click(function(){
-  localStorage.setItem("login","");
-  localStorage.setItem("pass","");
+$("#main__todo_logout").click(function () {
+  localStorage.setItem("login", "");
+  localStorage.setItem("pass", "");
 
   document.location.href = "index.html";
-})
-
+});
 
 //------------
 // функция назначающая Enter для добавления дела
 
-function  enterToDo(){
-  $(document).keyup(function(e) {
+function enterToDo() {
+  $(document).keyup(function (e) {
     if (e.key === "Enter") {
       addItem();
     }
@@ -393,47 +411,47 @@ function  enterToDo(){
 //------------------
 // функция открытия панели настроек
 
-function settingsItem(swich){
-    let id_parent = $(swich).parent().attr("name");
-    let id_needed = "";
+function settingsItem(swich) {
+  let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
+  let id_needed = "";
 
-    if($(swich).parent().hasClass('done')){
-      id_needed =`#panel-done${id_parent}`
-    } else {
-     id_needed =`#panel-${id_parent}`
-    }
+  if ($(swich).parent().hasClass("done")) {
+    // проверяем массив из которого нужно брать
+    id_needed = `#panel-done${id_parent}`;
+  } else {
+    id_needed = `#panel-${id_parent}`;
+  }
 
-    if(!$(id_needed).hasClass('opened')){
-       $(id_needed).toggleClass('opened');
-       $(id_needed).css('left',"0%");
-    }else{
-      $(id_needed).toggleClass('opened');
-      $(id_needed).css('left',"100%");
-    }
+  if (!$(id_needed).hasClass("opened")) {
+    $(swich).css("transform", "rotate(180deg)");
+    $(id_needed).toggleClass("opened");
+    $(id_needed).css("left", "0%");
+  } else {
+    $(swich).css("transform", "rotate(0deg)");
+    $(id_needed).toggleClass("opened");
+    $(id_needed).css("left", "100%");
+  }
 }
-
-
 
 //------------------------
 // функция выбора цвета дела
 
-function colorPick(elem){
+function colorPick(elem) {
   const pick_parent = $(elem).parent().parent().parent();
   const pick_parent_id = $(elem).parent().parent().parent().attr("name");
   const pick_color = $(elem).attr("name");
   let todoitem_colors_items = $(elem).siblings(".colorpick");
   todoitem_colors_items.push(elem);
 
-  for(pick of todoitem_colors_items){
+  for (pick of todoitem_colors_items) {
     $(pick).removeClass("choosen");
-
   }
-console.log(pick_parent)
+  console.log(pick_parent);
   $(elem).addClass("choosen");
 
-  $(pick_parent).attr("style",todoitem_colors[pick_color]);
+  $(pick_parent).attr("style", todoitem_colors[pick_color]);
 
-  if($(pick_parent).hasClass("done")){
+  if ($(pick_parent).hasClass("done")) {
     todosDone[pick_parent_id].color = pick_color;
   } else {
     todosActive[pick_parent_id].color = pick_color;

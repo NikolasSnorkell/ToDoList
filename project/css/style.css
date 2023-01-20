@@ -322,6 +322,9 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem {
+  -webkit-user-select: text;
+     -moz-user-select: text;
+          user-select: text;
   overflow: hidden;
   position: relative;
   width: 80%;
@@ -343,7 +346,7 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__handle:hover {
-  cursor: pointer;
+  cursor: grab;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block {
@@ -398,6 +401,7 @@ body {
 #main #main__todo #main__todo_block .todoitem .todoitem__settings {
   width: 1.7rem;
   z-index: 7;
+  transition: transform 0.3s ease-in-out;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__settings:hover {
@@ -481,6 +485,75 @@ body {
 
 #main #main__todo #main__todo_block .todoitem .setings_panel .settings__colors_block span.green {
   background: rgb(169, 247, 169);
+}
+
+#main #main__todo #main__todo_block .todoitem .setings_panel .settings__colors_block span.pink {
+  background: rgb(247, 169, 247);
+}
+
+#main #main__todo #trash__field {
+  position: relative;
+  overflow: hidden;
+  width: 50px;
+  height: auto;
+  padding: 1rem 0;
+  background: rgb(181, 181, 181);
+  border-radius: 10px;
+  margin: 2rem auto 0;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: width 0.3s cubic-bezier(0.46, -0.26, 0.63, 1.25), border 0.2s cubic-bezier(0.46, -0.26, 0.63, 1.25);
+}
+
+#main #main__todo #trash__field.overit {
+  border: 2px solid rgb(248, 74, 74);
+  animation: 2s cubic-bezier(0.62, -0.09, 0.41, 1.1) infinite trash__breath;
+}
+
+#main #main__todo #trash__field img {
+  width: 25px;
+  z-index: 5;
+}
+
+#main #main__todo #trash__field #trash_list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+#main #main__todo #trash__field #trash_list_remover {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgb(243, 97, 97);
+  z-index: 4;
+  transition: left 0.2s ease-in-out;
+}
+
+#main #main__todo #trash__field #trash_list_remover.toggled {
+  left: 0;
+}
+
+@keyframes trash__breath {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media screen and (max-width: 600px) {

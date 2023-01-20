@@ -66,10 +66,10 @@ function inputCheck(elem) {
 //проверка текста внутри полей на правильность ввода по шаблону
   if (!uni_regexp.test($(elem).val())) {
     $(`#${$(elem).attr("id")}`).addClass("red_border");;
-    // $(`#${$(elem).attr("id")}`).css("border", "2px solid red");
+   
   } else {
     $(`#${$(elem).attr("id")}`).removeClass("red_border");;
-    // $(`#${$(elem).attr("id")}`).css("border", "2px solid rgb(2, 113, 187)");
+   
   }
 
   if (
@@ -79,12 +79,11 @@ function inputCheck(elem) {
     if ($("#reg__pass1").val() != $("#reg__pass2").val()) {
       $("#reg__pass1").addClass("red_border");
       $("#reg__pass2").addClass("red_border");
-      // $("#reg__pass1").css("border", "2px solid red");
-      // $("#reg__pass2").css("border", "2px solid red");
+    
     } else {
       $("#reg__pass1").removeClass("red_border");
       $("#reg__pass2").removeClass("red_border");
-     // check_flag = 3; // максимальный балл флага, значит что все прошло проверку
+    
     }
 
   }
@@ -106,27 +105,27 @@ function inputCheck(elem) {
     }
     let elem__arr = $(`#main__sign_${elem__arr_name} input`);
 
-    // console.log(elem__arr);
+
     
 
    cycle: for(let i = 0;i<elem__arr.length;i++){
         if($(elem__arr[i]).val()!=""){
 
           if(!$(elem__arr[i]).hasClass("red_border")){
-            // check_flag=0;
+          
             flags_arr[i] = true;
-            // console.log("No class"+flags_arr+" "+$(elem__arr[i]).val());
+          
           } else {
-            // check_flag=-check_number;
+          
             flags_arr[i] = false;
-            // console.log("Class"+flags_arr+" "+$(elem__arr[i]).val());
+            
             
           }
     
         } else {
-          // check_flag=-check_number;
+        
           flags_arr[i] = false;
-          // console.log("break"+flags_arr+" "+$(elem__arr[i]).val());
+      
           break cycle;
         }
       }

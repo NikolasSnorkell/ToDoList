@@ -286,13 +286,14 @@ body {
     #main__todo_block {
       height: 100%;
       overflow-y: scroll;
-      margin: 15px 0 0;
+      margin: 15px 0 0;;
 
       &::-webkit-scrollbar {
         width: 0px;
       }
 
       .todoitem {
+        user-select:text;
         overflow: hidden;
         position: relative;
         width: 80%;
@@ -318,7 +319,7 @@ body {
          
 
           &:hover{
-            cursor: pointer;
+            cursor:grab;
           }
         }
 
@@ -374,6 +375,7 @@ body {
         .todoitem__settings {
           width: 1.7rem;
           z-index: 7;
+          transition: transform .3s ease-in-out;
           // float: right
           // position: absolute;
           // right: -2.5rem;
@@ -454,6 +456,9 @@ body {
               &.green{
                 background: rgb(169, 247, 169);
               }
+              &.pink{
+                background: rgb(247, 169, 247);
+              }
             }
           }
         }
@@ -461,5 +466,72 @@ body {
 
       }
     }
+
+    #trash__field{
+      position: relative;
+      overflow: hidden;
+      width: 50px;
+      height: auto;
+      padding: 1rem 0;
+      background: rgb(181, 181, 181);
+      border-radius: 10px;
+      // position: absolute;
+      // top: 10px; right: 10px;
+      margin: 2rem auto 0;
+      border:2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: width .3s cubic-bezier(.46,-0.26,.63,1.25), border .2s cubic-bezier(.46,-0.26,.63,1.25);
+
+      &.overit{
+        border:2px solid rgb(248, 74, 74);
+        animation:2s cubic-bezier(.62,-0.09,.41,1.1) infinite trash__breath;
+      }
+      img{
+          width: 25px;
+          z-index: 5;
+      }
+
+      #trash_list{
+        position: absolute;
+        top: 0;left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+
+      
+      }
+
+      #trash_list_remover{
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgb(243, 97, 97);
+        z-index: 4;
+        transition: left .2s ease-in-out;
+
+        &.toggled{
+          left: 0;
+        }
+      }
+
+    }
+
+  }
+}
+
+@keyframes trash__breath{
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
   }
 }
