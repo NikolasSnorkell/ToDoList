@@ -47,7 +47,7 @@ function sign_choose_change(index) {
 let check_flag = 0; // по этому флагу определяется выполнены ли все условия для регистрации/логина
 
 function inputCheck(elem) {
-  let regexp_mail = /^[a-z0-9_-]+@[a-z]+\.{1}[a-z]{2,3}$/;
+  let regexp_mail = /^[A-Za-z0-9_-]+@[a-z]+\.{1}[a-z]{2,3}$/;
   let regexp_pass = /^\w{5,16}$/;
   let uni_regexp;
   // check_flag=0;
@@ -141,6 +141,8 @@ function reg_send(){
   let mail = $("#reg__mail").val();
   let pass = $("#reg__pass1").val();
 
+  mail = mail.toLowerCase();
+
   if (flags_arr.join()=="true,true,true") {
     // console.log(mail +" "+pass);
 
@@ -167,9 +169,11 @@ $("#login__send").click(login_send);
 function login_send(){
   let mail = $("#login__mail").val();
   let pass = $("#login__pass").val();
-  // console.log(check_flag);
+
+  mail = mail.toLowerCase();
+
   if (flags_arr.join()==("true,true,false"||"true,true,true")) {
-    // console.log(mail +" "+pass);
+    
 
     $.post("php/loginUser.php", { mail: mail, pass: pass }, (response) => {
       console.log(response);
