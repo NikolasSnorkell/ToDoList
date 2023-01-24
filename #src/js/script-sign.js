@@ -6,7 +6,15 @@ if(localStorage.getItem('login')==undefined && localStorage.getItem('pass')==und
   document.location.href = "todo.html";
 }
 
+window.addEventListener('load', function () {
+  $('#loading').animate({'opacity':"0"},300);
+  setTimeout(() => {
+    
+    $('#loading').css('visibility',"hidden");   
+  }, 300);
+ 
 
+})
 
 
 let sign_choose_arr = $("#main__sign_choose p");

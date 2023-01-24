@@ -16,7 +16,7 @@
 //----------------------------------------
 
 * {
-  font-family: "Arbor";
+  font-family: "Bauhaus";
 }
 
 body {
@@ -24,6 +24,24 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
+#loading{
+  z-index:15;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  p{
+    color: white;
+  font-size: 5rem;
+  }
+}
+
 
 #main__sign {
   overflow: hidden;
@@ -376,7 +394,7 @@ body {
 
         .todoitem__settings {
           width: 1.7rem;
-          z-index: 7;
+          z-index: 17;
           transition: transform .3s ease-in-out;
           // float: right
           // position: absolute;
@@ -395,35 +413,78 @@ body {
 
 
         .setings_panel{
+          
           position: absolute;
-          top: 0;left: 100%;
+          top: 0px;right: 0px;
           width: 100%;
           height: 100%;
-          background: rgba(0, 0, 0, 0.493);
+          background: rgba(0, 0, 0, 0.185);
 
           display: flex;
-          justify-content: flex-start;
+          justify-content: flex-end;
+          column-gap: 5px;
+          padding-right: 4.5rem;
           align-items: center;
-          z-index: 6;
-          transition: left .5s cubic-bezier(.41,-0.51,.6,1.49);
+          z-index: 10;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity .4s cubic-bezier(.41,-0.51,.6,1.49);
 
-
-
-          .settings__trash_block{
-            float:left;
-            width: 4rem;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgb(2, 113, 187);
-            transition: background .3s ease-in-out;
+          span{
+            
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid transparent;
+            transform:scale(0) translateY(-50px);
+            transition: transform .2s cubic-bezier(.41,-0.51,.6,1.49);
 
             &:hover{
-              cursor:pointer;
-              background: rgb(187, 2, 2);
+              cursor: pointer;
+              border: 2px solid black;
+            }
+            &.choosen{
+              border: 2px solid black;
+            }
+            &.blue{
+              background: rgb(169, 209, 247);
+              // top: 100px;left: 68px;
+            }
+            &.yellow{
+              background: rgb(239, 247, 169);
+              // top: 23px;left: 0px;
+            }
+            &.red{
+              background: rgb(247, 169, 169);
+              // top: 54px;left: -4px;
+            }
+            &.green{
+              background: rgb(169, 247, 169);
+              // top: 86px;left: 4px;
+            }
+            &.pink{
+              background: rgb(247, 169, 247);
+              // top: 104px;left: 35px;
             }
           }
+
+
+
+
+          // .settings__trash_block{
+          //   float:left;
+          //   width: 4rem;
+          //   height: 100%;
+          //   display: flex;
+          //   justify-content: center;
+          //   align-items: center;
+          //   background: rgb(2, 113, 187);
+          //   transition: background .3s ease-in-out;
+
+          //   &:hover{
+          //     cursor:pointer;
+          //     background: rgb(187, 2, 2);
+          //   }
+          // }
 
           .settings__colors_block{
             height: 100%;
@@ -433,6 +494,7 @@ body {
             column-gap: 1rem;
             justify-content: center;
             align-items: center;
+
             span{
               width: 1.5rem;
               height: 1.5rem;

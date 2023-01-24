@@ -2,6 +2,16 @@ if (localStorage.getItem("login") == "") {
   document.location.href = "index.html";
 }
 
+window.addEventListener('load', function () {
+  $('#loading').animate({'opacity':"0"},300);
+  setTimeout(() => {
+    
+    $('#loading').css('visibility',"hidden");   
+  }, 300);
+ 
+
+})
+
 var todoitem_colors = {
   blue: "background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
   yellow: "background: rgb(239,247,169); border: 2px solid rgb(175, 187, 2)",
@@ -109,6 +119,7 @@ new Sortable(document.querySelector("#main__todo_block"), {
     console.log(todosActive);
     // sendToDos();
     // console.log(evt.item.children[0].className)
+    $("#trash__field").css("width", "50px");
   },
 });
 
@@ -280,15 +291,17 @@ function showToDos(arr) {
         <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
         <div class="setings_panel" id="panel-${class__item}${
           index - shift
-        }" style="left: 100%">
+        }">
         
-        <div class="settings__colors_block">
-          <span class="colorpick blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
-          <span class="colorpick yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
-          <span class="colorpick red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
-          <span class="colorpick green${picker_choose_4}" onclick="colorPick(this)" name="green"></span>
-          <span class="colorpick pink${picker_choose_5}" onclick="colorPick(this)" name="pink"></span>
-        </div>
+        <span class="colorpick colorpick1 blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
+        <span class="colorpick colorpick2 pink${picker_choose_5}" onclick="colorPick(this)" name="pink"></span> 
+        <span class="colorpick colorpick3 green${picker_choose_4}" onclick="colorPick(this)" name="green"></span>
+        <span class="colorpick colorpick4 red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
+        <span class="colorpick colorpick5 yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
+        
+         
+         
+         
         </div>
     </div></div>`
     );
@@ -422,7 +435,7 @@ function enterToDo() {
 // функция открытия панели настроек
 
 function settingsItem(swich) {
-  let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
+   let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
   let id_needed = "";
 
   if ($(swich).parent().hasClass("done")) {
@@ -432,23 +445,68 @@ function settingsItem(swich) {
     id_needed = `#panel-${id_parent}`;
   }
 
-  if (!$(id_needed).hasClass("opened")) {
+    if (!$(id_needed).hasClass("opened")) {
     $(swich).css("transform", "rotate(180deg)");
     $(id_needed).toggleClass("opened");
-    $(id_needed).css("left", "0%");
+    
+      let span_arr = $(id_needed).children("span");
+
+      console.log(span_arr);
+      $(id_needed).css({
+        "visibility": "visible",
+        "opacity":"1"
+      });
+
+      for(let i = 0; i<span_arr.length;i++){
+        setTimeout(() => {
+          $(span_arr[i]).css({
+            "transform":"scale(1) translateY(0)"
+          });
+        }, (5-i)+"00");
+       
+      }
+
   } else {
+
     $(swich).css("transform", "rotate(0deg)");
     $(id_needed).toggleClass("opened");
-    $(id_needed).css("left", "100%");
+    
+    let span_arr = $(id_needed).children("span");
+ 
+
+    for(let i = 0; i<span_arr.length;i++){
+      setTimeout(() => {
+        $(span_arr[i]).css({
+          "transform":"scale(0) translateY(-50px)"
+        });
+      }, i+"00");
+     
+    }
+
+    setTimeout(() => {
+      $(id_needed).css({
+        "opacity":"0"
+      });
+
+    }, 500);
+
+    setTimeout(() => {
+      $(id_needed).css({
+        "visibility": "hidden"
+      });
+
+    }, 800);
+   
   }
+
 }
 
 //------------------------
 // функция выбора цвета дела
 
 function colorPick(elem) {
-  const pick_parent = $(elem).parent().parent().parent();
-  const pick_parent_id = $(elem).parent().parent().parent().attr("name");
+  const pick_parent = $(elem).parent().parent();
+  const pick_parent_id = $(elem).parent().parent().attr("name");
   const pick_color = $(elem).attr("name");
   let todoitem_colors_items = $(elem).siblings(".colorpick");
   todoitem_colors_items.push(elem);
