@@ -263,11 +263,12 @@ body {
 }
 
 #main #main__todo #calendar__block.shown {
-  height: 700px;
+  min-height: 260px;
+  height: 270px;
 }
 
 #main #main__todo #calendar__block #calendar {
-  margin: 0 auto 2rem;
+  margin: 0 auto;
   z-index: 10;
 }
 
@@ -312,7 +313,9 @@ body {
 }
 
 #main #main__todo #main__todo_block {
-  height: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  flex-grow: 1;
   overflow-y: scroll;
   margin: 15px 0 0;
 }
@@ -495,7 +498,8 @@ body {
   position: relative;
   overflow: hidden;
   width: 50px;
-  height: auto;
+  min-height: 50px;
+  height: 50px;
   padding: 1rem 0;
   background: rgb(181, 181, 181);
   border-radius: 10px;
@@ -529,8 +533,8 @@ body {
 
 #main #main__todo #trash__field #trash_list_remover {
   position: absolute;
-  top: 0;
-  left: -100%;
+  top: 100%;
+  left: 0;
   width: 100%;
   height: 100%;
   background: rgb(243, 97, 97);

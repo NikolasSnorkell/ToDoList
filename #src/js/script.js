@@ -56,16 +56,28 @@ new Sortable(document.querySelector("#main__todo_block"), {
   },
   onUnchoose: function (/**Event*/ evt) {
     if (id_destination == "trash_list") {
-      $("#trash_list_remover").toggleClass("toggled");
-      setTimeout(() => {
-         delItem($(evt.item).children()[0]);
+
+      toggle1();
+     async function toggle1(){
+       await $("#trash_list_remover").animate({"top":"0%"},300);
+       setTimeout(() => {
+       delItem($(evt.item).children()[0]);
         $("#trash_list").html("");
-        $("#trash__field").removeClass("overit");
-      }, 200);
-      $("#trash_list_remover").toggleClass("toggled");
+       }, 300);
+       
+       await $("#trash_list_remover").animate({"top":"100%"},300);
+       setTimeout(() => {
+       
+        $("#trash__field").css("width", "50px");
+        }, 600);
+      
+      }
+
+      $("#trash__field").removeClass("overit");
     }
   
-    $("#trash__field").css("width", "50px");
+  
+    
   },
   onEnd: function (/**Event*/ evt) {
   
@@ -269,9 +281,7 @@ function showToDos(arr) {
         <div class="setings_panel" id="panel-${class__item}${
           index - shift
         }" style="left: 100%">
-        <div class="settings__trash_block"  onclick="delItem(this)">
-        <img src="img/trash.png" class="todoitem__settings" alt="todosettings">
-        </div>
+        
         <div class="settings__colors_block">
           <span class="colorpick blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
           <span class="colorpick yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
