@@ -299,7 +299,7 @@ function showToDos(arr) {
         <span class="colorpick colorpick4 red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
         <span class="colorpick colorpick5 yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
         
-         
+         <span class="edit_item"><img src="img/edit.png"></span>
          
          
         </div>
@@ -449,9 +449,9 @@ function settingsItem(swich) {
     $(swich).css("transform", "rotate(180deg)");
     $(id_needed).toggleClass("opened");
     
-      let span_arr = $(id_needed).children("span");
+      let span_arr = $(id_needed).children("span.colorpick");
 
-      console.log(span_arr);
+   
       $(id_needed).css({
         "visibility": "visible",
         "opacity":"1"
@@ -462,7 +462,7 @@ function settingsItem(swich) {
           $(span_arr[i]).css({
             "transform":"scale(1) translateY(0)"
           });
-        }, (5-i)+"00");
+        }, ((5-i)+"00")*0.2);
        
       }
 
@@ -479,7 +479,7 @@ function settingsItem(swich) {
         $(span_arr[i]).css({
           "transform":"scale(0) translateY(-50px)"
         });
-      }, i+"00");
+      }, (i+"00")*0.2);
      
     }
 
@@ -488,14 +488,14 @@ function settingsItem(swich) {
         "opacity":"0"
       });
 
-    }, 500);
+    }, 300);
 
     setTimeout(() => {
       $(id_needed).css({
         "visibility": "hidden"
       });
 
-    }, 800);
+    }, 500);
    
   }
 
@@ -514,7 +514,7 @@ function colorPick(elem) {
   for (pick of todoitem_colors_items) {
     $(pick).removeClass("choosen");
   }
-  console.log(pick_parent);
+  // console.log(pick_parent);
   $(elem).addClass("choosen");
 
   $(pick_parent).attr("style", todoitem_colors[pick_color]);
