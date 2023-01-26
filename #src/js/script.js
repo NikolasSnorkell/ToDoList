@@ -7,7 +7,7 @@ window.addEventListener('load', function () {
   setTimeout(() => {
     
     $('#loading').css('visibility',"hidden");   
-  }, 300);
+  }, 100);
  
 
 })
@@ -299,7 +299,7 @@ function showToDos(arr) {
         <span class="colorpick colorpick4 red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
         <span class="colorpick colorpick5 yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
         
-         <span class="edit_item"><img src="img/edit.png"></span>
+         <span class="edit_item" onclick="editItem(this)"><img src="img/edit.png"></span>
          
          
         </div>
@@ -457,6 +457,10 @@ function settingsItem(swich) {
         "opacity":"1"
       });
 
+      $(".edit_item").css({
+        "transform":"scale(1) translateY(0)"
+      });
+
       for(let i = 0; i<span_arr.length;i++){
         setTimeout(() => {
           $(span_arr[i]).css({
@@ -473,6 +477,9 @@ function settingsItem(swich) {
     
     let span_arr = $(id_needed).children("span");
  
+    $(".edit_item").css({
+      "transform":"scale(0) translateY(100px)"
+    });
 
     for(let i = 0; i<span_arr.length;i++){
       setTimeout(() => {
@@ -526,3 +533,43 @@ function colorPick(elem) {
   }
   sendToDos();
 }
+
+// функция редактирования дела
+//-----------------
+let edit_parent, edit_parent_id;
+
+ function editItem(elem){
+    $("#edit__overlay").css("visibility","visible");
+
+   edit_parent = $(elem).parent().parent();
+   edit_parent_id = $(elem).parent().parent().attr("name");
+    let item_text =  $(elem).parent("div").siblings(".todoitem__check_block").children("label").text();
+    $('#edit__area').val(item_text);
+
+
+    // console.log(item_text);
+ }
+
+
+function confirmEdit(){
+  let edit_text = $('#edit__area').val();
+      // console.log("id: "+edit_parent_id);
+      // console.log("hasClass: "+$(edit_parent).hasClass("done"));
+
+      if(edit_text!=""){
+      if($(edit_parent).hasClass("done")){
+        todosDone[edit_parent_id].body = edit_text;
+      } else {
+        todosActive[edit_parent_id].body = edit_text;
+      }
+      showToDos([...todosActive, ...todosDone]);
+      sendToDos();
+      $("#edit__overlay").css("visibility","hidden");
+    }
+}
+
+
+
+ $('#edit__blackplate').click(function(){
+  $("#edit__overlay").css("visibility","hidden");
+ })
