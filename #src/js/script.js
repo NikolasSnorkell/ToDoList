@@ -437,6 +437,8 @@ function enterToDo() {
 function settingsItem(swich) {
    let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
   let id_needed = "";
+  let edit_item = $(swich).siblings("div").children(".edit_item");
+
 
   if ($(swich).parent().hasClass("done")) {
     // проверяем массив из которого нужно брать
@@ -457,7 +459,7 @@ function settingsItem(swich) {
         "opacity":"1"
       });
 
-      $(".edit_item").css({
+      $(edit_item[0]).css({
         "transform":"scale(1) translateY(0)"
       });
 
@@ -477,7 +479,7 @@ function settingsItem(swich) {
     
     let span_arr = $(id_needed).children("span");
  
-    $(".edit_item").css({
+    $(edit_item[0]).css({
       "transform":"scale(0) translateY(100px)"
     });
 
