@@ -10,7 +10,7 @@ $request = $_POST;
 
     } else {
         $fp = fopen($filename, 'w');
-        fwrite($fp, '[[],[]]');
+        fwrite($fp, '[[],[],[]]');
         fclose($fp);
         print_r("Created");
     }

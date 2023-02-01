@@ -262,6 +262,26 @@ body {
       }
     }
 
+
+    #sync__block{
+      position: absolute;
+      top: 0.3rem;
+      right: 1rem;
+      padding: 0.5rem;
+      z-index: 10;
+      // background: rgb(181, 181, 181);
+
+      &:hover{
+        cursor: pointer;
+       
+      }
+
+      img{
+        transition: transform .3s ease-in-out;
+        width: 2.5rem;
+      }
+    }
+
     #main__todo_title {
       position: relative;
       padding: 10px;

@@ -317,6 +317,23 @@ body {
   cursor: pointer;
 }
 
+#main #main__todo #sync__block {
+  position: absolute;
+  top: 0.3rem;
+  right: 1rem;
+  padding: 0.5rem;
+  z-index: 10;
+}
+
+#main #main__todo #sync__block:hover {
+  cursor: pointer;
+}
+
+#main #main__todo #sync__block img {
+  transition: transform 0.3s ease-in-out;
+  width: 2.5rem;
+}
+
 #main #main__todo #main__todo_title {
   position: relative;
   padding: 10px;

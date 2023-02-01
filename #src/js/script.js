@@ -2,15 +2,22 @@ if (localStorage.getItem("login") == "") {
   document.location.href = "index.html";
 }
 
-window.addEventListener('load', function () {
-  $('#loading').animate({'opacity':"0"},300);
-  setTimeout(() => {
-    
-    $('#loading').css('visibility',"hidden");   
-  }, 100);
- 
+var statusNetwork = "online";
 
-})
+window.addEventListener("load", function () {
+  $("#loading").animate({ opacity: "0" }, 300);
+  setTimeout(() => {
+    $("#loading").css("visibility", "hidden");
+  }, 100);
+});
+
+$(document).ajaxError(function (event, request, settings) {
+  console.log("error");
+  statusNetwork = "offline";
+});
+
+window.addEventListener("offline", () => (statusNetwork = "offline"));
+window.addEventListener("online", () => (statusNetwork = "online"));
 
 var todoitem_colors = {
   blue: "background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
@@ -50,7 +57,8 @@ new Sortable(document.querySelector("#main__todo_block"), {
     //  console.log(evt.newIndex);
   },
   onUpdate: function (/**Event*/ evt) {
-    sendToDos();
+    // sendToDos();
+    // saveToLocal();
   },
   onChoose: function (/**Event*/ evt) {
     $("#trash__field").css({ width: "50%" });
@@ -66,58 +74,54 @@ new Sortable(document.querySelector("#main__todo_block"), {
   },
   onUnchoose: function (/**Event*/ evt) {
     if (id_destination == "trash_list") {
-
       toggle1();
-     async function toggle1(){
-       await $("#trash_list_remover").animate({"top":"0%"},300);
-       setTimeout(() => {
-       delItem($(evt.item).children()[0]);
-        $("#trash_list").html("");
-       }, 300);
-       
-       await $("#trash_list_remover").animate({"top":"100%"},300);
-       setTimeout(() => {
-       
-        $("#trash__field").css("width", "50px");
+      async function toggle1() {
+        await $("#trash_list_remover").animate({ top: "0%" }, 300);
+        setTimeout(() => {
+          delItem($(evt.item).children()[0]);
+          $("#trash_list").html("");
+        }, 300);
+
+        await $("#trash_list_remover").animate({ top: "100%" }, 300);
+        setTimeout(() => {
+          $("#trash__field").css("width", "50px");
         }, 600);
-      
       }
 
       $("#trash__field").removeClass("overit");
     }
-  
-  
-    
   },
   onEnd: function (/**Event*/ evt) {
-  
-    if(id_destination!="trash_list"){
-    let tempText, tempColor;
-    if (evt.oldIndex != evt.newIndex) {
-      if (evt.newIndex >= todosActive.length) {
-        evt.newIndex = todosActive.length - 1;
-      }
-      if (evt.oldIndex >= todosActive.length) {
-        evt.oldIndex = todosActive.length - 1;
-      }
+    if (id_destination != "trash_list") {
+      let tempText, tempColor;
+      if (evt.oldIndex != evt.newIndex) {
+        if (evt.newIndex >= todosActive.length) {
+          evt.newIndex = todosActive.length - 1;
+        }
+        if (evt.oldIndex >= todosActive.length) {
+          evt.oldIndex = todosActive.length - 1;
+        }
 
-      // console.log(evt.oldIndex + " " + evt.newIndex);
-      tempText = todosActive[evt.newIndex].body;
-      tempColor = todosActive[evt.newIndex].color;
-      todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body;
-      todosActive[evt.newIndex].color = todosActive[evt.oldIndex].color;
-      todosActive[evt.oldIndex].body = tempText;
-      todosActive[evt.oldIndex].color = tempColor;
-    }
+        // console.log(evt.oldIndex + " " + evt.newIndex);
+        // tempText = todosActive[evt.newIndex].body;
+        // tempColor = todosActive[evt.newIndex].color;
+        // todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body;
+        // todosActive[evt.newIndex].color = todosActive[evt.oldIndex].color;
+        // todosActive[evt.oldIndex].body = tempText;
+        // todosActive[evt.oldIndex].color = tempColor;
+      }
       let tempArr = $(".todoitem ").not(".todoitem.done");
       for ([index, todo] of todosActive.entries()) {
         todo.body = tempArr[index].innerText;
+        todo.color = tempArr[index].getAttribute("color");
+  
       }
-        
-      sendToDos();
+
+      // sendToDos();
+      saveToLocal();
     }
-    console.log(todosActive);
-    // sendToDos();
+    // console.log(todosActive);
+
     // console.log(evt.item.children[0].className)
     $("#trash__field").css("width", "50px");
   },
@@ -144,6 +148,7 @@ if (month + 1 < 10) month = `0${month + 1}`;
 else month += 1;
 
 let system_date = `${year}-${month}-${day}`;
+let todayDate = `${year}-${month}-${day}`;
 
 function showDate(dateVar) {
   let tempDate = dateVar.split("-");
@@ -182,16 +187,29 @@ function gettingJson(dateVar) {
       "php/getJson.php",
       { aim: "get", date: dateVar, loc_mail: loc_mail },
       function (response) {
-        // console.log(response);
         response = JSON.parse(response);
-        if (response[0] != null) todosActive = [...response[0]];
-        else todosActive = [];
-        if (response[1] != null) todosDone = [...response[1]];
-        else todosDone = [];
+        let localItem = JSON.parse(localStorage.getItem("currentDay"));
+        console.log(response);
+
+        if (todayDate == dateVar && localItem!=null && +response[2] <= +localItem.timestamp  ) {
+          if (localItem["arr1"] != null) todosActive = [...localItem["arr1"]];
+          else todosActive = [];
+          if (localItem["arr2"] != null) todosDone = [...localItem["arr2"]];
+          else todosDone = [];
+        } else if(todayDate != dateVar || +response[2] > +localItem.timestamp){
+          if (response[0] != null) todosActive = [...response[0]];
+          else todosActive = [];
+          if (response[1] != null) todosDone = [...response[1]];
+          else todosDone = [];
+        }
+
+        if(localItem==null ){
+          localItem = "";
+        }
 
         // вызов функции показа всех дел
         showToDos([...todosActive, ...todosDone]);
-        // console.log(todosActive);
+        // console.log(response[2]);
       }
     )
   );
@@ -212,8 +230,14 @@ document.addEventListener("DOMContentLoaded", () => {
     actions: {
       clickDay(event, dates) {
         system_date = dates[0];
-        checkedJsonPromise = checkJson(system_date);
-        gettingJson(system_date);
+        if (statusNetwork == "online") {
+          checkedJsonPromise = checkJson(system_date);
+          gettingJson(system_date);
+        } else if(system_date==todayDate && statusNetwork=="offline"){
+          gettingJson(system_date);
+        } else {
+          alert("You are currently offline!");
+        }
         showDate(system_date);
         //console.log(system_date);
       },
@@ -228,8 +252,6 @@ $("#main__todo_title h2").click(function () {
   $("#calendar__block").toggleClass("shown");
   // $('#calendar__block').slideToggle(1000);
 });
-
-
 
 //----------------------------
 // функция показа всех имеющихся дел, как сделанных так и активных
@@ -280,7 +302,7 @@ function showToDos(arr) {
       $("#main__todo_block").html() +
         `<div class="sortable__block"  data-anijs="if: click, do: flipInY animated"><div class="todoitem ${class__item}" name="${
           index - shift
-        }" style="${todoitem_colors[todo.color]}">
+        }" style="${todoitem_colors[todo.color]}" color="${todo.color}">
         <img src="img/handle.png" alt="handle" class="todoitem__handle">
         <div class="todoitem__check_block">
         <input type="checkbox" class="todoitem__check" id="todo${index}">
@@ -289,9 +311,7 @@ function showToDos(arr) {
         }</label>
         </div>
         <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
-        <div class="setings_panel" id="panel-${class__item}${
-          index - shift
-        }">
+        <div class="setings_panel" id="panel-${class__item}${index - shift}">
         
         <span class="colorpick colorpick1 blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
         <span class="colorpick colorpick2 pink${picker_choose_5}" onclick="colorPick(this)" name="pink"></span> 
@@ -329,7 +349,8 @@ function addItem() {
     });
 
     showToDos([...todosActive, ...todosDone]);
-    sendToDos();
+    // sendToDos();
+    saveToLocal();
   }
 }
 //------------------------------------
@@ -357,7 +378,8 @@ function delItem(elem) {
 
   showToDos([...todosActive, ...todosDone]);
   // console.log(todosCurrentObj);
-  sendToDos();
+  // sendToDos();
+  saveToLocal();
 }
 
 //-----------------------------
@@ -389,7 +411,8 @@ function transferItem(arr1, index1, arr2, status) {
   // console.log(arr1);
   // console.log(arr2);
   showToDos([...todosActive, ...todosDone]);
-  sendToDos();
+  // sendToDos();
+  saveToLocal();
 }
 
 // --------------------------------------
@@ -397,21 +420,65 @@ function transferItem(arr1, index1, arr2, status) {
 
 function sendToDos() {
   let loc_mail = localStorage.getItem("login");
+  let jsonString;
+  let currentTime = new Date().getTime() / 1000;
 
-  let jsonString = {
-    aim: "create/update",
-    arr1: todosActive,
-    arr2: todosDone,
-    date: system_date,
-    loc_mail: loc_mail,
-  };
+  if (system_date == todayDate) {
+    jsonString = JSON.parse(localStorage.getItem("currentDay"));
+  } else {
+    jsonString = {
+      aim: "create/update",
+      arr1: todosActive,
+      arr2: todosDone,
+      date: system_date,
+      loc_mail: loc_mail,
+      timestamp: currentTime,
+    };
+  }
 
-  $.post("php/updateJson.php", jsonString, function (response) {
-    console.log(response);
-  });
+  if (statusNetwork == "online") {
+    $.post("php/updateJson.php", jsonString, function (response) {
+      console.log(response);
+    });
+    $('#sync__block img').css({transform:"rotate(180deg)"});
+    setTimeout(() => {
+      $('#sync__block img').css({transform:"rotate(0deg)"});
+    }, 400);
+  } else {
+    alert("Cannot sync! You are offline now.");
+  }
 }
 
-// sendToDos();
+//-------------
+//функция сохранения дел в локальное хранилище
+
+function saveToLocal() {
+  if (system_date == todayDate) {
+    let loc_mail = localStorage.getItem("login");
+    let currentTime = new Date().getTime() / 1000;
+
+    let jsonString = {
+      aim: "create/update",
+      arr1: todosActive,
+      arr2: todosDone,
+      date: system_date,
+      loc_mail: loc_mail,
+      timestamp: currentTime,
+    };
+
+    localStorage.setItem("currentDay", JSON.stringify(jsonString));
+    console.log(jsonString.arr1);
+  } else {
+    sendToDos();
+  }
+}
+
+//--------------
+//по клику отправка дел на сервер
+
+$("#sync__block").click(function () {
+  sendToDos();
+});
 
 $("#main__todo_logout").click(function () {
   localStorage.setItem("login", "");
@@ -435,10 +502,9 @@ function enterToDo() {
 // функция открытия панели настроек
 
 function settingsItem(swich) {
-   let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
+  let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
   let id_needed = "";
   let edit_item = $(swich).siblings("div").children(".edit_item");
-
 
   if ($(swich).parent().hasClass("done")) {
     // проверяем массив из которого нужно брать
@@ -447,76 +513,74 @@ function settingsItem(swich) {
     id_needed = `#panel-${id_parent}`;
   }
 
-    if (!$(id_needed).hasClass("opened")) {
+  if (!$(id_needed).hasClass("opened")) {
     $(swich).css("transform", "rotate(180deg)");
     $(id_needed).toggleClass("opened");
-    
-      let span_arr = $(id_needed).children("span.colorpick");
 
-   
-      $(id_needed).css({
-        "visibility": "visible",
-        "opacity":"1"
-      });
+    let span_arr = $(id_needed).children("span.colorpick");
 
-      $(edit_item[0]).css({
-        "transform":"scale(1) translateY(0)"
-      });
-
-      for(let i = 0; i<span_arr.length;i++){
-        setTimeout(() => {
-          $(span_arr[i]).css({
-            "transform":"scale(1) translateY(0)"
-          });
-        }, ((5-i)+"00")*0.2);
-       
-      }
-
-  } else {
-
-    $(swich).css("transform", "rotate(0deg)");
-    $(id_needed).toggleClass("opened");
-    
-    let span_arr = $(id_needed).children("span");
- 
-    $(edit_item[0]).css({
-      "transform":"scale(0) translateY(100px)"
+    $(id_needed).css({
+      visibility: "visible",
+      opacity: "1",
     });
 
-    for(let i = 0; i<span_arr.length;i++){
+    $(edit_item[0]).css({
+      transform: "scale(1) translateY(0)",
+    });
+
+    for (let i = 0; i < span_arr.length; i++) {
       setTimeout(() => {
         $(span_arr[i]).css({
-          "transform":"scale(0) translateY(-50px)"
+          transform: "scale(1) translateY(0)",
         });
-      }, (i+"00")*0.2);
-     
+      }, (5 - i + "00") * 0.2);
+    }
+  } else {
+    $(swich).css("transform", "rotate(0deg)");
+    $(id_needed).toggleClass("opened");
+
+    let span_arr = $(id_needed).children("span");
+
+    $(edit_item[0]).css({
+      transform: "scale(0) translateY(100px)",
+    });
+
+    for (let i = 0; i < span_arr.length; i++) {
+      setTimeout(() => {
+        $(span_arr[i]).css({
+          transform: "scale(0) translateY(-50px)",
+        });
+      }, (i + "00") * 0.2);
     }
 
     setTimeout(() => {
       $(id_needed).css({
-        "opacity":"0"
+        opacity: "0",
       });
-
     }, 300);
 
     setTimeout(() => {
       $(id_needed).css({
-        "visibility": "hidden"
+        visibility: "hidden",
       });
-
     }, 500);
-   
   }
-
 }
 
 //------------------------
 // функция выбора цвета дела
 
 function colorPick(elem) {
-  const pick_parent = $(elem).parent().parent();
-  const pick_parent_id = $(elem).parent().parent().attr("name");
-  const pick_color = $(elem).attr("name");
+  let pick_parent = $(elem).parent().parent();
+  let pick_parent_id = $(elem).parent().parent().attr("name");
+  let pick_color = $(elem).attr("name");
+  let tempArr = $(".todoitem ");
+  for (let i = 0; i < tempArr.length; i++) {
+    if (pick_parent[0].innerText == tempArr[i].innerText) {
+      pick_parent_id = i;
+    }
+  }
+
   let todoitem_colors_items = $(elem).siblings(".colorpick");
   todoitem_colors_items.push(elem);
 
@@ -527,51 +591,63 @@ function colorPick(elem) {
   $(elem).addClass("choosen");
 
   $(pick_parent).attr("style", todoitem_colors[pick_color]);
+  $(pick_parent).attr("color", pick_color);
 
   if ($(pick_parent).hasClass("done")) {
     todosDone[pick_parent_id].color = pick_color;
   } else {
     todosActive[pick_parent_id].color = pick_color;
   }
-  sendToDos();
+  // sendToDos();
+  saveToLocal();
 }
 
 // функция редактирования дела
 //-----------------
 let edit_parent, edit_parent_id;
 
- function editItem(elem){
-    $("#edit__overlay").css("visibility","visible");
+function editItem(elem) {
+  $("#edit__overlay").css("visibility", "visible");
+  edit_parent = $(elem).parent("div").parent(".todoitem");
 
-   edit_parent = $(elem).parent().parent();
-   edit_parent_id = $(elem).parent().parent().attr("name");
-    let item_text =  $(elem).parent("div").siblings(".todoitem__check_block").children("label").text();
-    $('#edit__area').val(item_text);
-
-
-    // console.log(item_text);
- }
-
-
-function confirmEdit(){
-  let edit_text = $('#edit__area').val();
-      // console.log("id: "+edit_parent_id);
-      // console.log("hasClass: "+$(edit_parent).hasClass("done"));
-
-      if(edit_text!=""){
-      if($(edit_parent).hasClass("done")){
-        todosDone[edit_parent_id].body = edit_text;
-      } else {
-        todosActive[edit_parent_id].body = edit_text;
-      }
-      showToDos([...todosActive, ...todosDone]);
-      sendToDos();
-      $("#edit__overlay").css("visibility","hidden");
+  let tempArr = $(".todoitem ").not(".todoitem.done");
+  for (let i = 0; i < tempArr.length; i++) {
+    if (edit_parent[0].innerText == tempArr[i].innerText) {
+      edit_parent_id = i;
     }
+  }
+
+  //  edit_parent_id = $(edit_parent).attr("name");
+  let item_text = $(elem)
+    .parent("div")
+    .siblings(".todoitem__check_block")
+    .children("label")
+    .text();
+  $("#edit__area").val(item_text);
+
+  // console.log(edit_parent);
+  // console.log(edit_parent_id);
 }
 
+function confirmEdit() {
+  let edit_text = $("#edit__area").val();
+  // console.log("id: "+edit_parent_id);
+  // console.log("hasClass: "+$(edit_parent).hasClass("done"));
 
+  if (edit_text != "") {
+    if ($(edit_parent).hasClass("done")) {
+      todosDone[edit_parent_id].body = edit_text;
+    } else {
+      todosActive[edit_parent_id].body = edit_text;
+    }
+    saveToLocal();
+    showToDos([...todosActive, ...todosDone]);
+    // sendToDos();
 
- $('#edit__blackplate').click(function(){
-  $("#edit__overlay").css("visibility","hidden");
- })
+    $("#edit__overlay").css("visibility", "hidden");
+  }
+}
+
+$("#edit__blackplate").click(function () {
+  $("#edit__overlay").css("visibility", "hidden");
+});

@@ -20,7 +20,7 @@ if ($request['aim'] == "create/update") {
 
     $filename = $path.$request['loc_mail'].'/'.$request['date'].'.json';
 
-    $jsonObj = [$request["arr1"], $request["arr2"]];
+    $jsonObj = [$request["arr1"], $request["arr2"],[$request["timestamp"]]];
 
     if($jsonObj['0']!=null){
     for($i=0;$i<count($jsonObj['0']);$i++){
