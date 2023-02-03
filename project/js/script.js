@@ -19,12 +19,14 @@ $(document).ajaxError(function (event, request, settings) {
 window.addEventListener("offline", () => (statusNetwork = "offline"));
 window.addEventListener("online", () => (statusNetwork = "online"));
 
+
+
 var todoitem_colors = {
-  blue: "background: rgb(169, 209, 247); border: 2px solid rgb(2, 113, 187)",
-  yellow: "background: rgb(239,247,169); border: 2px solid rgb(175, 187, 2)",
-  red: "background: rgb(247,169,169); border: 2px solid rgb(187, 24, 2)",
-  green: "background: rgb(169,247,169); border: 2px solid rgb(24, 187, 2)",
-  pink: "background: rgb(247, 169, 247); border: 2px solid rgb(201, 0, 201)",
+  blue: " background: linear-gradient(145deg, #c2c2c2, #bdc8f6)",
+  yellow: " background: linear-gradient(145deg, #c2c2c2, #f0f6bd)",
+  red: " background: linear-gradient(145deg, #c2c2c2, #f6bdbd)",
+  green: " background: linear-gradient(145deg, #c2c2c2, #bff6bd)",
+  pink: "  background: linear-gradient(145deg, #c2c2c2, #f6bde0)",
 }; // массив цветов и границ для дел
 
 let id_destination;
@@ -303,14 +305,14 @@ function showToDos(arr) {
         `<div class="sortable__block"  data-anijs="if: click, do: flipInY animated"><div class="todoitem ${class__item}" name="${
           index - shift
         }" style="${todoitem_colors[todo.color]}" color="${todo.color}">
-        <img src="img/handle.png" alt="handle" class="todoitem__handle">
+        <img src="img/handle1.png" alt="handle" class="todoitem__handle">
         <div class="todoitem__check_block">
         <input type="checkbox" class="todoitem__check" id="todo${index}">
         <label for="todo${index}" class="todoitem__label ${class__check}" onclick="markItem(this)">${
           todo.body
         }</label>
         </div>
-        <img src="img/settings.png" class="todoitem__settings" onclick="settingsItem(this)" alt="todosettings">
+        <div class="todoitem__settings" onclick="settingsItem(this)"></div>
         <div class="setings_panel" id="panel-${class__item}${index - shift}">
         
         <span class="colorpick colorpick1 blue${picker_choose_1}" onclick="colorPick(this)" name="blue"></span>
@@ -319,7 +321,7 @@ function showToDos(arr) {
         <span class="colorpick colorpick4 red${picker_choose_3}" onclick="colorPick(this)" name="red"></span>
         <span class="colorpick colorpick5 yellow${picker_choose_2}" onclick="colorPick(this)" name="yellow"></span>
         
-         <span class="edit_item" onclick="editItem(this)"><img src="img/edit.png"></span>
+         <span class="edit_item" onclick="editItem(this)"></span>
          
          
         </div>
@@ -439,11 +441,9 @@ function sendToDos() {
   if (statusNetwork == "online") {
     $.post("php/updateJson.php", jsonString, function (response) {
       console.log(response);
+     
     });
-    $('#sync__block img').css({transform:"rotate(180deg)"});
-    setTimeout(() => {
-      $('#sync__block img').css({transform:"rotate(0deg)"});
-    }, 400);
+
   } else {
     alert("Cannot sync! You are offline now.");
   }
@@ -476,7 +476,7 @@ function saveToLocal() {
 //--------------
 //по клику отправка дел на сервер
 
-$("#sync__block").click(function () {
+$("#main__todo_sync").click(function () {
   sendToDos();
 });
 
@@ -502,6 +502,7 @@ function enterToDo() {
 // функция открытия панели настроек
 
 function settingsItem(swich) {
+ press(swich);
   let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
   let id_needed = "";
   let edit_item = $(swich).siblings("div").children(".edit_item");
@@ -514,7 +515,7 @@ function settingsItem(swich) {
   }
 
   if (!$(id_needed).hasClass("opened")) {
-    $(swich).css("transform", "rotate(180deg)");
+    // $(swich).css("transform", "rotate(180deg)");
     $(id_needed).toggleClass("opened");
 
     let span_arr = $(id_needed).children("span.colorpick");
@@ -524,9 +525,9 @@ function settingsItem(swich) {
       opacity: "1",
     });
 
-    $(edit_item[0]).css({
-      transform: "scale(1) translateY(0)",
-    });
+    // $(edit_item[0]).css({
+    //   transform: "scale(1) translateY(0)",
+    // });
 
     for (let i = 0; i < span_arr.length; i++) {
       setTimeout(() => {
@@ -535,6 +536,9 @@ function settingsItem(swich) {
         });
       }, (5 - i + "00") * 0.2);
     }
+    $(edit_item[0]).css({
+      transform: "scale(1) translateY(0px)",
+    });
   } else {
     $(swich).css("transform", "rotate(0deg)");
     $(id_needed).toggleClass("opened");
@@ -651,3 +655,49 @@ function confirmEdit() {
 $("#edit__blackplate").click(function () {
   $("#edit__overlay").css("visibility", "hidden");
 });
+
+
+
+function press(flag){
+  switch (flag){
+    case 'sync': 
+      $("#main__todo_sync").toggleClass("pressed");
+      setTimeout(() => {
+        $("#main__todo_sync").toggleClass("pressed");
+      }, 800);
+      break
+    case 'logout':  
+      $("#main__todo_logout").toggleClass("pressed");
+      break
+    case 'addToDo': 
+      $("#addToDo").toggleClass("pressed");
+      setTimeout(() => {
+        $("#addToDo").toggleClass("pressed");
+      }, 800);
+      break
+    case 'editToDo': 
+      $("#edit__confirm").toggleClass("pressed");
+      setTimeout(() => {
+        $("#edit__confirm").toggleClass("pressed");
+      }, 800);
+      break
+    case 'regToDo': 
+      $("#reg__send").toggleClass("pressed");
+      setTimeout(() => {
+        $("#reg__send").toggleClass("pressed");
+      }, 800);
+      break
+    case 'editToDo': 
+      $("#login__send").toggleClass("pressed");
+      setTimeout(() => {
+        $("#login__send").toggleClass("pressed");
+      }, 800);
+      break
+    default:
+       $(flag).toggleClass("pressed");
+    }
+    
+}
+
+$("#main__todo_sync").on("touchstart",()=>press('sync'));
+// $("#main__todo_sync").on("touchend",()=>press('sync'));

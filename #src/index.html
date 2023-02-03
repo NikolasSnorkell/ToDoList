@@ -33,13 +33,13 @@
             <div id="main__sign_login">
                 <input type="email" placeholder="Email" name="mail" id="login__mail" oninput="inputCheck(this)">
                 <input type="password" name="pass" placeholder="Password" id="login__pass" oninput="inputCheck(this)" onfocus="enterToDo()">
-                <button name="send_login" id="login__send">Login</button>
+                <button name="send_login"  onmousedown="press('loginToDo')" id="login__send">Login</button>
             </div>
             <div id="main__sign_register">
                 <input type="email" name="mail" placeholder="Email" id="reg__mail" oninput="inputCheck(this)">
                 <input type="password" name="pass1" placeholder="Password (5-10 characters)" id="reg__pass1" oninput="inputCheck(this)">
                 <input type="password" name="pass2" placeholder="Password Repeat" id="reg__pass2" oninput="inputCheck(this)" onfocus="enterToDo()">
-                <button name="send_reg" id="reg__send">Register</button></div>
+                <button name="send_reg"  onmousedown="press('regToDo')" id="reg__send">Register</button></div>
 
         </div>
 

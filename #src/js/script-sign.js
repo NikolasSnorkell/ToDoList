@@ -219,3 +219,23 @@ function  enterToDo(){
     }
   });
 }
+
+
+function press(flag){
+  switch (flag){
+   
+    case 'regToDo': 
+      $("#reg__send").toggleClass("pressed");
+      setTimeout(() => {
+        $("#reg__send").toggleClass("pressed");
+      }, 800);
+      break
+    case 'loginToDo': 
+      $("#login__send").toggleClass("pressed");
+      setTimeout(() => {
+        $("#login__send").toggleClass("pressed");
+      }, 800);
+      break
+    }
+    
+}

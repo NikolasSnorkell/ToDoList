@@ -151,7 +151,8 @@ body {
 #edit__overlay #edit__block {
   width: 300px;
   height: auto;
-  background: rgb(241, 241, 241);
+  border-radius: 15px;
+  background: #d7d6d6;
   padding: 15px;
   z-index: 22;
 }
@@ -166,6 +167,10 @@ body {
   max-width: 100%;
   max-height: 200px;
   margin: 0 auto;
+  padding: 5px;
+  border-radius: 10px;
+  background: #d7d6d6;
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
   font-size: 1.5rem;
   margin: 10px 0;
 }
@@ -173,9 +178,17 @@ body {
 #edit__overlay #edit__block button {
   font-size: 1.5rem;
   float: right;
+  margin-right: 1rem;
+  border: 2px solid transparent;
   padding: 5px 10px;
-  background: rgb(2, 113, 187);
-  color: white;
+  background-color: #d7d6d6;
+  box-shadow: 4px 4px 10px #8d8d8d, -4px -4px 10px #ffffff;
+}
+
+#edit__overlay #edit__block button.pressed {
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
+  border: 2px solid #cdcdcd;
+  color: blue;
 }
 
 #edit__overlay #edit__blackplate {
@@ -193,15 +206,19 @@ body {
   width: 100%;
   height: 100%;
   background-image: url("../img/sign__back.png");
+  background-blend-mode: lighten;
   background-size: cover;
   background-position: center;
+  background-color: #d7d6d6;
 }
 
 #main__sign #main__sign_block {
   width: 500px;
   min-height: 400px;
   height: 60vh;
-  background: linear-gradient(45deg, rgb(241, 241, 241), rgba(241, 241, 241, 0.788));
+  border-radius: 25px;
+  background: linear-gradient(-45deg, #d7d6d6, rgba(215, 214, 214, 0.2588235294));
+  box-shadow: 10px 10px 10px #a1a1a1, -10px -10px 10px #ffffff;
   margin: 100px auto;
   display: flex;
   flex-direction: column;
@@ -213,9 +230,13 @@ body {
   font-size: 3.5rem;
   margin-bottom: 1rem;
   text-align: center;
+  color: rgb(71, 71, 71);
+  text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
 }
 
 #main__sign #main__sign_block #main__sign_title p {
+  color: rgb(71, 71, 71);
+  text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
   font-size: 2.7rem;
   margin-bottom: 5rem;
   text-align: center;
@@ -232,7 +253,18 @@ body {
 
 #main__sign #main__sign_block #main__sign_choose p {
   border-bottom: 3px solid transparent;
-  transition: border 0.3s ease-in;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #d7d6d6;
+  box-shadow: 4px 4px 8px #949494, -4px -4px 8px #ffffff;
+  border: 2px solid transparent;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
+}
+
+#main__sign #main__sign_block #main__sign_choose p.pressed {
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
+  border: 2px solid #cdcdcd;
+  color: blue;
 }
 
 #main__sign #main__sign_block #main__sign_choose p:hover {
@@ -240,7 +272,9 @@ body {
 }
 
 #main__sign #main__sign_block #main__sign_choose p.sign__choose_checked {
-  border-bottom: 3px solid rgb(2, 113, 187);
+  box-shadow: inset 4px 4px 8px #aeadad, inset -4px -4px 8px #ffffff;
+  border: 2px solid #cdcdcd;
+  color: blue;
 }
 
 #main__sign #main__sign_block #main__sign_login,
@@ -256,14 +290,17 @@ body {
 #main__sign #main__sign_block #main__sign_register input {
   width: 80%;
   padding: 5px 10px;
-  border: 2px solid rgb(2, 113, 187);
+  border: 2px solid #cdcdcd;
+  background: #cccccc;
+  box-shadow: inset 4px 4px 7px #aeadad, inset -4px -4px 7px #ffffff;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
 }
 
 #main__sign #main__sign_block #main__sign_login input.red_border,
 #main__sign #main__sign_block #main__sign_register input.red_border {
-  border: 2px solid rgb(255, 0, 0);
+  border: 2px solid rgb(243, 97, 97);
 }
 
 #main__sign #main__sign_block #main__sign_login #login__send,
@@ -271,10 +308,22 @@ body {
 #main__sign #main__sign_block #main__sign_register #login__send,
 #main__sign #main__sign_block #main__sign_register #reg__send {
   width: 40%;
-  color: white;
   font-size: 1.4rem;
   padding: 5px 10px;
-  background: rgb(2, 113, 187);
+  border-radius: 10px;
+  background-color: #d7d6d6;
+  box-shadow: 4px 4px 8px #949494, -4px -4px 8px #ffffff;
+  border: 2px solid transparent;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
+}
+
+#main__sign #main__sign_block #main__sign_login #login__send.pressed,
+#main__sign #main__sign_block #main__sign_login #reg__send.pressed,
+#main__sign #main__sign_block #main__sign_register #login__send.pressed,
+#main__sign #main__sign_block #main__sign_register #reg__send.pressed {
+  box-shadow: inset 4px 4px 8px #aeadad, inset -4px -4px 8px #ffffff;
+  border: 2px solid #cdcdcd;
+  color: blue;
 }
 
 #main__sign #main__sign_block #main__sign_register {
@@ -289,49 +338,66 @@ body {
   padding: 15px;
   width: 100%;
   height: 100%;
-  background-image: url("../img/back.jpg");
-  background-size: contain;
+  background: #d7d6d6;
 }
 
 #main #main__todo {
+  border-radius: 25px;
+  background: #d7d6d6;
+  box-shadow: 13px 13px 26px #a1a1a1, -13px -13px 26px #ffffff;
   position: relative;
   margin: 50px auto;
   width: 600px;
   height: 80vh;
-  background: rgb(241, 241, 241);
   display: flex;
   flex-direction: column;
   padding: 15px 0;
-  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.479);
 }
 
-#main #main__todo #main__todo_logout {
+#main #main__todo #main__todo_logout,
+#main #main__todo #main__todo_sync {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  width: 2rem;
+  width: 3rem;
+  height: 3rem;
   z-index: 10;
+  background-image: url("../img/logout1.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  background-color: linear-gradient(145deg, #e6e5e5, #c2c1c1);
+  box-shadow: 5px 5px 10px #aeadad, -5px -5px 10px #ffffff;
+  border: 2px solid transparent;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-#main #main__todo #main__todo_logout:hover {
+#main #main__todo #main__todo_logout:hover,
+#main #main__todo #main__todo_sync:hover {
   cursor: pointer;
 }
 
-#main #main__todo #sync__block {
-  position: absolute;
-  top: 0.3rem;
+#main #main__todo #main__todo_logout.pressed,
+#main #main__todo #main__todo_sync.pressed {
+  background-color: #cdcdcd;
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
+  border: 2px solid #c2c1c1;
+}
+
+#main #main__todo #main__todo_sync {
+  left: unset;
   right: 1rem;
   padding: 0.5rem;
-  z-index: 10;
+  background-image: url("../img/sync1.png");
 }
 
-#main #main__todo #sync__block:hover {
+#main #main__todo #main__todo_sync:hover {
   cursor: pointer;
 }
 
-#main #main__todo #sync__block img {
-  transition: transform 0.3s ease-in-out;
-  width: 2.5rem;
+#main #main__todo #main__todo_sync.pressed {
+  background-image: url("../img/sync1-blue.png");
 }
 
 #main #main__todo #main__todo_title {
@@ -340,6 +406,8 @@ body {
 }
 
 #main #main__todo #main__todo_title h2 {
+  color: rgb(71, 71, 71);
+  text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
   width: -moz-fit-content;
   width: fit-content;
   margin: 0 auto;
@@ -365,18 +433,55 @@ body {
 #main #main__todo #calendar__block #calendar {
   margin: 0 auto;
   z-index: 10;
+  border-radius: 8px;
+  background: #d7d6d6;
+  box-shadow: inset 3px 3px 8px #a6a5a5, inset -3px -3px 8px #ffffff;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-week__day {
+  color: rgb(52, 130, 182);
 }
 
 #main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_weekend {
-  color: rgb(35, 161, 245);
+  color: rgb(5, 102, 166);
 }
 
 #main #main__todo #calendar__block #calendar .vanilla-calendar-week__day_weekend {
-  color: rgb(2, 113, 187);
+  color: rgb(5, 102, 166);
 }
 
 #main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_selected {
-  background: rgb(0, 59, 99);
+  color: white !important;
+  background: rgb(74, 74, 74) !important;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_today {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(255, 255, 255) !important;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn {
+  background-color: #d7d6d6;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-months,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-months__month,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-years,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-years__year,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-years_selecting {
+  background-color: #d7d6d6;
+  color: rgb(0, 91, 151);
+  font-size: 1.1rem;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-months__month_selected,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-years__year_selected {
+  color: black;
+}
+
+#main #main__todo #calendar__block #calendar .vanilla-calendar-day__btn_next,
+#main #main__todo #calendar__block #calendar .vanilla-calendar-years__year_disabled {
+  color: #7f7f7f !important;
 }
 
 #main #main__todo #main__todo_input {
@@ -395,16 +500,28 @@ body {
 #main #main__todo #main__todo_input div #typeToDo {
   width: 100%;
   padding: 5px 10px;
-  border: 2px solid rgb(2, 113, 187);
+  border: 2px solid #cdcdcd;
   text-align: center;
   font-size: 2rem;
+  border-radius: 12px;
+  background: #d7d6d6;
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
 }
 
 #main #main__todo #main__todo_input div #addToDo {
   font-size: 1.5rem;
   padding: 5px 10px;
-  background: rgb(2, 113, 187);
-  color: white;
+  border-radius: 10px;
+  background-color: #d7d6d6;
+  box-shadow: 4px 4px 9px #919191, -4px -4px 9px #ffffff;
+  border: 2px solid transparent;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#main #main__todo #main__todo_input div #addToDo.pressed {
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
+  border: 2px solid #cdcdcd;
+  color: blue;
 }
 
 #main #main__todo #main__todo_block {
@@ -420,27 +537,32 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem {
+  width: 80%;
+  font-size: 1.4rem;
+  min-height: 50px;
+  height: auto;
   -webkit-user-select: text;
      -moz-user-select: text;
           user-select: text;
   overflow: hidden;
   position: relative;
-  width: 80%;
-  font-size: 1.3rem;
-  min-height: 50px;
-  height: auto;
-  padding: 10px 15px;
+  border: 2px solid transparent;
+  border-radius: 17px;
+  background-color: linear-gradient(145deg, #919191, #e6e5e5);
+  box-shadow: 3px 3px 10px #7f7f7f, -3px -3px 10px #ffffff;
+  padding: 10px 10px;
   margin: 10px auto;
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  transition: background 0.3s ease-in-out, border 0.2s ease-in-out;
   z-index: 5;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__handle {
-  width: 2.2rem;
+  width: 1.8rem;
+  margin-top: 0.4rem;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__handle:hover {
@@ -448,14 +570,13 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block {
-  width: 70%;
   display: flex;
   -moz-column-gap: 1rem;
        column-gap: 1rem;
   align-items: center;
   flex-grow: 1;
-  margin-right: 2.5rem;
-  margin-left: 1rem;
+  word-break: break-all;
+  margin: 0 1rem;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check {
@@ -472,43 +593,56 @@ body {
   cursor: pointer;
 }
 
-#main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label:hover::before {
-  background: rgb(85, 85, 85);
-}
-
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label.checked {
   cursor: pointer;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label.checked::before {
-  background: rgb(85, 85, 85);
+  background-color: blue;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__check_block .todoitem__check + label::before {
   content: "";
   position: absolute;
-  left: -2.5rem;
+  left: -3rem;
   top: 0rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  background: rgb(212, 212, 212);
-  border-radius: 15%;
-  transition: background 0.3s ease-in-out;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: rgb(89, 89, 89);
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__settings {
-  width: 1.7rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
   z-index: 17;
-  transition: transform 0.3s ease-in-out;
+  background-image: url("../img/settings.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid transparent;
+  box-shadow: 3px 3px 9px #8f8e8e, -3px -3px 9px #ffffff;
+  transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 #main #main__todo #main__todo_block .todoitem .todoitem__settings:hover {
   cursor: pointer;
 }
 
+#main #main__todo #main__todo_block .todoitem .todoitem__settings.pressed {
+  box-shadow: inset 3px 3px 10px #aeadad, inset -3px -3px 10px #ffffff;
+  border: 2px solid #cdcdcd;
+  background-color: #d7d6d6;
+  background-image: url("../img/settings-blue.png");
+}
+
 #main #main__todo #main__todo_block .todoitem.done {
-  background: rgb(221, 221, 221) !important;
-  border: 2px solid rgb(148, 148, 148) !important;
+  border: 2px solid #cdcdcd;
+  background: linear-gradient(145deg, #b9b9b9, #d1d1d1) !important;
+  box-shadow: inset 4px 4px 10px #929292, inset -4px -4px 10px #ffffff;
 }
 
 #main #main__todo #main__todo_block .todoitem .setings_panel {
@@ -517,7 +651,7 @@ body {
   right: 0px;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.185);
+  background: linear-gradient(145deg, transparent, rgba(0, 0, 0, 0.3882352941));
   display: flex;
   justify-content: flex-end;
   -moz-column-gap: 5px;
@@ -531,10 +665,16 @@ body {
 }
 
 #main #main__todo #main__todo_block .todoitem .setings_panel span.edit_item {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-image: url("../img/edit.png");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #d7d6d6;
   margin-left: 5px;
   border: 2px solid transparent;
+  border-radius: 50%;
   transform: scale(1) translateY(100px);
   transition: transform 0.3s cubic-bezier(0.41, -0.51, 0.6, 1.49);
 }
@@ -543,15 +683,11 @@ body {
   cursor: pointer;
 }
 
-#main #main__todo #main__todo_block .todoitem .setings_panel span.edit_item img {
-  width: 20px;
-  height: 20px;
-}
-
 #main #main__todo #main__todo_block .todoitem .setings_panel span.colorpick {
   width: 1.5rem;
   height: 1.5rem;
   border: 2px solid transparent;
+  border-radius: 50%;
   transform: scale(0) translateY(-50px);
   transition: transform 0.2s cubic-bezier(0.41, -0.51, 0.6, 1.49);
 }
@@ -592,24 +728,25 @@ body {
   min-height: 50px;
   height: 50px;
   padding: 1rem 0;
-  background: rgb(181, 181, 181);
   border-radius: 10px;
   margin: 2rem auto 0;
-  border: 2px solid transparent;
+  border: 2px solid #cdcdcd;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #d7d6d6;
+  box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
   transition: width 0.3s cubic-bezier(0.46, -0.26, 0.63, 1.25), border 0.2s cubic-bezier(0.46, -0.26, 0.63, 1.25);
 }
 
 #main #main__todo #trash__field.overit {
-  border: 2px solid rgb(248, 74, 74);
+  border: 2px solid rgb(243, 97, 97);
   animation: 2s cubic-bezier(0.62, -0.09, 0.41, 1.1) infinite trash__breath;
 }
 
 #main #main__todo #trash__field img {
-  width: 25px;
+  width: 20px;
   z-index: 5;
 }
 
