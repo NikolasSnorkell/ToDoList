@@ -193,12 +193,12 @@ function gettingJson(dateVar) {
         let localItem = JSON.parse(localStorage.getItem("currentDay"));
         console.log(response);
 
-        if (todayDate == dateVar && localItem!=null && +response[2] <= +localItem.timestamp  ) {
+        if (dateVar == localItem.date && localItem!=null && +response[2] <= +localItem.timestamp  ) {
           if (localItem["arr1"] != null) todosActive = [...localItem["arr1"]];
           else todosActive = [];
           if (localItem["arr2"] != null) todosDone = [...localItem["arr2"]];
           else todosDone = [];
-        } else if(todayDate != dateVar || +response[2] > +localItem.timestamp){
+        } else if(dateVar != localItem.date || +response[2] > +localItem.timestamp){
           if (response[0] != null) todosActive = [...response[0]];
           else todosActive = [];
           if (response[1] != null) todosDone = [...response[1]];
