@@ -1,9 +1,12 @@
+
+//защита от незалогиненного пользователя
 if (localStorage.getItem("login") == "") {
   document.location.href = "index.html";
 }
 
 var statusNetwork = "online";
 
+// экран загрузки
 window.addEventListener("load", function () {
   $("#loading").animate({ opacity: "0" }, 300);
   setTimeout(() => {
@@ -11,8 +14,8 @@ window.addEventListener("load", function () {
   }, 100);
 });
 
+// если запрос на сервер не проходит то флаг статуса сети переходит в оффлайн режим
 $(document).ajaxError(function (event, request, settings) {
-  console.log("error");
   statusNetwork = "offline";
 });
 
@@ -27,10 +30,11 @@ var todoitem_colors = {
   red: " background: linear-gradient(145deg, #c2c2c2, #f6bdbd)",
   green: " background: linear-gradient(145deg, #c2c2c2, #bff6bd)",
   pink: "  background: linear-gradient(145deg, #c2c2c2, #f6bde0)",
-}; // массив цветов и границ для дел
+}; // массив цветов для дел
 
 let id_destination;
 
+// блок библиотеки для Drag'n'Drop
 new Sortable(document.querySelector("#main__todo_block"), {
   group: "todolist",
   swapThreshold: 1,
@@ -47,26 +51,11 @@ new Sortable(document.querySelector("#main__todo_block"), {
   dragClass: "sortable__block",
   animation: 300,
   easing: "cubic-bezier(1, 0, 0, 1)",
-  onSort: function (/**Event*/ evt) {
-    var itemEl = evt.item; // dragged HTMLElement
-    evt.to; // target list
-    evt.from; // previous list
-    evt.oldIndex; // element's old index within old parent
-    evt.newIndex = 2; // element's new index within new parent
-    evt.clone; // the clone element
-    evt.pullMode; // when item is in another sortable: `"clone"` if cloning, `true` if moving
-
-    //  console.log(evt.newIndex);
-  },
-  onUpdate: function (/**Event*/ evt) {
-    // sendToDos();
-    // saveToLocal();
-  },
   onChoose: function (/**Event*/ evt) {
     $("#trash__field").css({ width: "50%" });
   },
   onMove: function (/**Event*/ evt) {
-    // console.log(evt.related);
+    // при переходе элемента в список удаления, включается анимация корзины
     if ($(evt.related).attr("id") == "trash_list") {
       $("#trash__field").addClass("overit");
     } else {
@@ -75,6 +64,7 @@ new Sortable(document.querySelector("#main__todo_block"), {
     id_destination = $(evt.related).attr("id");
   },
   onUnchoose: function (/**Event*/ evt) {
+    // если отпустили дело в списке удаления, то запускается процесс удаления и соответствующая анимация
     if (id_destination == "trash_list") {
       toggle1();
       async function toggle1() {
@@ -95,7 +85,6 @@ new Sortable(document.querySelector("#main__todo_block"), {
   },
   onEnd: function (/**Event*/ evt) {
     if (id_destination != "trash_list") {
-      let tempText, tempColor;
       if (evt.oldIndex != evt.newIndex) {
         if (evt.newIndex >= todosActive.length) {
           evt.newIndex = todosActive.length - 1;
@@ -103,14 +92,6 @@ new Sortable(document.querySelector("#main__todo_block"), {
         if (evt.oldIndex >= todosActive.length) {
           evt.oldIndex = todosActive.length - 1;
         }
-
-        // console.log(evt.oldIndex + " " + evt.newIndex);
-        // tempText = todosActive[evt.newIndex].body;
-        // tempColor = todosActive[evt.newIndex].color;
-        // todosActive[evt.newIndex].body = todosActive[evt.oldIndex].body;
-        // todosActive[evt.newIndex].color = todosActive[evt.oldIndex].color;
-        // todosActive[evt.oldIndex].body = tempText;
-        // todosActive[evt.oldIndex].color = tempColor;
       }
       let tempArr = $(".todoitem ").not(".todoitem.done");
       for ([index, todo] of todosActive.entries()) {
@@ -119,16 +100,13 @@ new Sortable(document.querySelector("#main__todo_block"), {
   
       }
 
-      // sendToDos();
       saveToLocal();
     }
-    // console.log(todosActive);
-
-    // console.log(evt.item.children[0].className)
     $("#trash__field").css("width", "50px");
   },
 });
 
+// определение списка удаления
 new Sortable(document.querySelector("#trash_list"), {
   group: "todolist",
   swapThreshold: 1,
@@ -171,7 +149,7 @@ async function checkJson(dateVar) {
   $.post(
     "php/checkJson.php",
     { date: dateVar, loc_mail: loc_mail },
-    (response) => console.log(response)
+    (response) => {}
   );
 }
 
@@ -191,7 +169,6 @@ function gettingJson(dateVar) {
       function (response) {
         response = JSON.parse(response);
         let localItem = JSON.parse(localStorage.getItem("currentDay"));
-        console.log(response);
 
         if (dateVar == localItem.date && localItem!=null && +response[2] <= +localItem.timestamp  ) {
           if (localItem["arr1"] != null) todosActive = [...localItem["arr1"]];
@@ -211,7 +188,6 @@ function gettingJson(dateVar) {
 
         // вызов функции показа всех дел
         showToDos([...todosActive, ...todosDone]);
-        // console.log(response[2]);
       }
     )
   );
@@ -241,18 +217,16 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("You are currently offline!");
         }
         showDate(system_date);
-        //console.log(system_date);
+       
       },
     },
   });
   calendar.init();
 });
 
-// $('#calendar__block').slideUp(0);
 
 $("#main__todo_title h2").click(function () {
   $("#calendar__block").toggleClass("shown");
-  // $('#calendar__block').slideToggle(1000);
 });
 
 //----------------------------
@@ -264,12 +238,13 @@ function showToDos(arr) {
   for ([index, todo] of arr.entries()) {
     let class__check,
       class__item,
+      shift = 0, // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
       picker_choose_1 = "",
       picker_choose_2 = "",
       picker_choose_3 = "",
       picker_choose_4 = "",
-      picker_choose_5 = "",
-      shift = 0; // 1,2 классы которые добавляются если дело сделано; 3 это сдвиг для переборки чтобы сделанные дела начинались с 0 для совпадения с элементами массива
+      picker_choose_5 = "";
+     
 
     // проверка статуса дела
     if (todo.status == "done") {
@@ -330,7 +305,6 @@ function showToDos(arr) {
   }
 }
 
-// <img src="img/trash.png" class="todoitem__trash" onclick="delItem(this)" alt="trash">
 
 //----------------------------------
 
@@ -351,14 +325,12 @@ function addItem() {
     });
 
     showToDos([...todosActive, ...todosDone]);
-    // sendToDos();
     saveToLocal();
   }
 }
 //------------------------------------
 // функция удаления дела
 function delItem(elem) {
-  let parent_elem = $(elem).parent().parent();
   let parent_id = $(elem).attr("name"); // получение id из поля
   // name в todoitem
   if ($(elem).hasClass("done")) {
@@ -368,19 +340,8 @@ function delItem(elem) {
     todosActive.splice(parent_id, 1);
   }
 
-  // let parent_elem = $(elem).parent().parent();
-  // let parent_id = $(parent_elem).attr("name"); // получение id из поля
-  // // name в todoitem
-  // if ($(parent_elem).hasClass("done")) {
-  //   // выбор нужного массива из которого нужно удалить элемент
-  //   todosDone.splice(parent_id, 1);
-  // } else {
-  //   todosActive.splice(parent_id, 1);
-  // }
 
   showToDos([...todosActive, ...todosDone]);
-  // console.log(todosCurrentObj);
-  // sendToDos();
   saveToLocal();
 }
 
@@ -399,7 +360,7 @@ function markItem(elem) {
 }
 
 //--------------------------------------
-// функция для
+// функция для перемещения дела между активными и выполненными массивами
 function transferItem(arr1, index1, arr2, status) {
   let tempBody = arr1[index1].body;
   let tempColor = arr1[index1].color;
@@ -410,10 +371,7 @@ function transferItem(arr1, index1, arr2, status) {
     status: `${status}`,
     color: tempColor,
   });
-  // console.log(arr1);
-  // console.log(arr2);
   showToDos([...todosActive, ...todosDone]);
-  // sendToDos();
   saveToLocal();
 }
 
@@ -440,7 +398,6 @@ function sendToDos() {
 
   if (statusNetwork == "online") {
     $.post("php/updateJson.php", jsonString, function (response) {
-      console.log(response);
      
     });
 
@@ -467,7 +424,6 @@ function saveToLocal() {
     };
 
     localStorage.setItem("currentDay", JSON.stringify(jsonString));
-    console.log(jsonString.arr1);
   } else {
     sendToDos();
   }
@@ -480,6 +436,8 @@ $("#main__todo_sync").click(function () {
   sendToDos();
 });
 
+//--------------
+// выход из аккаунта по нажатию кнопки
 $("#main__todo_logout").click(function () {
   localStorage.setItem("login", "");
   localStorage.setItem("pass", "");
@@ -499,7 +457,7 @@ function enterToDo() {
 }
 
 //------------------
-// функция открытия панели настроек
+// функция открытия панели настроек, swich здесь это элемент шестеренка
 
 function settingsItem(swich) {
  press(swich);
@@ -515,7 +473,6 @@ function settingsItem(swich) {
   }
 
   if (!$(id_needed).hasClass("opened")) {
-    // $(swich).css("transform", "rotate(180deg)");
     $(id_needed).toggleClass("opened");
 
     let span_arr = $(id_needed).children("span.colorpick");
@@ -524,10 +481,6 @@ function settingsItem(swich) {
       visibility: "visible",
       opacity: "1",
     });
-
-    // $(edit_item[0]).css({
-    //   transform: "scale(1) translateY(0)",
-    // });
 
     for (let i = 0; i < span_arr.length; i++) {
       setTimeout(() => {
@@ -579,6 +532,7 @@ function colorPick(elem) {
   let pick_parent_id = $(elem).parent().parent().attr("name");
   let pick_color = $(elem).attr("name");
   let tempArr = $(".todoitem ");
+  // поиск верного id дела которому нужно заменить цвет
   for (let i = 0; i < tempArr.length; i++) {
     if (pick_parent[0].innerText == tempArr[i].innerText) {
       pick_parent_id = i;
@@ -591,7 +545,6 @@ function colorPick(elem) {
   for (pick of todoitem_colors_items) {
     $(pick).removeClass("choosen");
   }
-  // console.log(pick_parent);
   $(elem).addClass("choosen");
 
   $(pick_parent).attr("style", todoitem_colors[pick_color]);
@@ -602,7 +555,6 @@ function colorPick(elem) {
   } else {
     todosActive[pick_parent_id].color = pick_color;
   }
-  // sendToDos();
   saveToLocal();
 }
 
@@ -621,7 +573,6 @@ function editItem(elem) {
     }
   }
 
-  //  edit_parent_id = $(edit_parent).attr("name");
   let item_text = $(elem)
     .parent("div")
     .siblings(".todoitem__check_block")
@@ -629,14 +580,11 @@ function editItem(elem) {
     .text();
   $("#edit__area").val(item_text);
 
-  // console.log(edit_parent);
-  // console.log(edit_parent_id);
 }
 
+// функция при нажатии кнопки edit в поле редактирования дела
 function confirmEdit() {
   let edit_text = $("#edit__area").val();
-  // console.log("id: "+edit_parent_id);
-  // console.log("hasClass: "+$(edit_parent).hasClass("done"));
 
   if (edit_text != "") {
     if ($(edit_parent).hasClass("done")) {
@@ -646,18 +594,17 @@ function confirmEdit() {
     }
     saveToLocal();
     showToDos([...todosActive, ...todosDone]);
-    // sendToDos();
 
     $("#edit__overlay").css("visibility", "hidden");
   }
 }
-
+// закрытия поля редактирования при нажатии по пустому месту
 $("#edit__blackplate").click(function () {
   $("#edit__overlay").css("visibility", "hidden");
 });
 
 
-
+// анимации нажатия для ряда кнопок
 function press(flag){
   switch (flag){
     case 'sync': 
@@ -700,4 +647,3 @@ function press(flag){
 }
 
 $("#main__todo_sync").on("touchstart",()=>press('sync'));
-// $("#main__todo_sync").on("touchend",()=>press('sync'));

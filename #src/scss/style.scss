@@ -75,8 +75,7 @@ body {
       padding: 5px;
       border-radius: 10px;
       background: #d7d6d6;
-          box-shadow: inset 5px 5px 10px #aeadad,
-                      inset -5px -5px 10px #ffffff;
+      box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
       font-size: 1.5rem;
       margin: 10px 0;
     }
@@ -88,16 +87,14 @@ body {
       border: 2px solid transparent;
       padding: 5px 10px;
       background-color: #d7d6d6;
-          box-shadow:  4px 4px 10px #8d8d8d,
-                       -4px -4px 10px #ffffff;
-      
-       &.pressed {
-            box-shadow: inset 5px 5px 10px #aeadad,
-            inset -5px -5px 10px #ffffff;
-            border: 2px solid #cdcdcd;
+      box-shadow: 4px 4px 10px #8d8d8d, -4px -4px 10px #ffffff;
 
-            color: blue;
-          }
+      &.pressed {
+        box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
+        border: 2px solid #cdcdcd;
+
+        color: blue;
+      }
     }
   }
 
@@ -117,7 +114,7 @@ body {
   width: 100%;
   height: 100%;
   background-image: url("../img/sign__back.png");
-  background-blend-mode:lighten;
+  background-blend-mode: lighten;
   background-size: cover;
   background-position: center;
   background-color: #d7d6d6;
@@ -127,9 +124,8 @@ body {
     min-height: 400px;
     height: 60vh;
     border-radius: 25px;
-    background: linear-gradient(-45deg,#d7d6d6,#d7d6d642);
-    box-shadow:  10px 10px 10px #a1a1a1,
-                 -10px -10px 10px #ffffff;
+    background: linear-gradient(-45deg, #d7d6d6, #d7d6d642);
+    box-shadow: 10px 10px 10px #a1a1a1, -10px -10px 10px #ffffff;
     margin: 100px auto;
 
     display: flex;
@@ -148,12 +144,11 @@ body {
 
     #main__sign_title {
       h2 {
-       
         font-size: 3.5rem;
         margin-bottom: 1rem;
         text-align: center;
         color: rgb(71, 71, 71);
-        text-shadow: -1px -1px rgb(255, 255, 255),1px 1px rgb(27, 27, 27);
+        text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
 
         @media screen and (max-width: 500px) {
           font-size: 2.5rem;
@@ -161,7 +156,7 @@ body {
       }
       p {
         color: rgb(71, 71, 71);
-        text-shadow: -1px -1px rgb(255, 255, 255),1px 1px rgb(27, 27, 27);
+        text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
         font-size: 2.7rem;
         margin-bottom: 5rem;
         text-align: center;
@@ -178,22 +173,18 @@ body {
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
 
-      
-
-
       p {
         border-bottom: 3px solid transparent;
         padding: 5px 10px;
         border-radius: 10px;
         background-color: #d7d6d6;
-        box-shadow:  4px 4px 8px #949494,
-                     -4px -4px 8px #ffffff;
+        box-shadow: 4px 4px 8px #949494, -4px -4px 8px #ffffff;
         border: 2px solid transparent;
-        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
-        
+        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
+          color 0.2s ease-in-out;
+
         &.pressed {
-          box-shadow: inset 5px 5px 10px #aeadad,
-          inset -5px -5px 10px #ffffff;
+          box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
           border: 2px solid #cdcdcd;
 
           color: blue;
@@ -204,8 +195,7 @@ body {
         }
 
         &.sign__choose_checked {
-          box-shadow:inset  4px 4px 8px #aeadad,
-                    inset -4px -4px 8px #ffffff;
+          box-shadow: inset 4px 4px 8px #aeadad, inset -4px -4px 8px #ffffff;
           border: 2px solid #cdcdcd;
 
           color: blue;
@@ -229,11 +219,11 @@ body {
         padding: 5px 10px;
         border: 2px solid #cdcdcd;
         background: #cccccc;
-        box-shadow: inset 4px 4px 7px #aeadad,
-                    inset -4px -4px 7px #ffffff;
+        box-shadow: inset 4px 4px 7px #aeadad, inset -4px -4px 7px #ffffff;
         text-align: center;
         font-size: 1.5rem;
-        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
+        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
+          color 0.2s ease-in-out;
 
         &.red_border {
           border: 2px solid rgb(243, 97, 97);
@@ -246,14 +236,13 @@ body {
         padding: 5px 10px;
         border-radius: 10px;
         background-color: #d7d6d6;
-        box-shadow:  4px 4px 8px #949494,
-                     -4px -4px 8px #ffffff;
+        box-shadow: 4px 4px 8px #949494, -4px -4px 8px #ffffff;
         border: 2px solid transparent;
-        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out;
-        
+        transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
+          color 0.2s ease-in-out;
+
         &.pressed {
-          box-shadow: inset 4px 4px 8px #aeadad,
-          inset -4px -4px 8px #ffffff;
+          box-shadow: inset 4px 4px 8px #aeadad, inset -4px -4px 8px #ffffff;
           border: 2px solid #cdcdcd;
 
           color: blue;
@@ -291,8 +280,7 @@ body {
   #main__todo {
     border-radius: 25px;
     background: #d7d6d6;
-    box-shadow:  13px 13px 26px #a1a1a1,
-                 -13px -13px 26px #ffffff;
+    box-shadow: 13px 13px 26px #a1a1a1, -13px -13px 26px #ffffff;
     position: relative;
     margin: 50px auto;
     width: 600px;
@@ -323,8 +311,7 @@ body {
       background-position: center;
       border-radius: 50%;
       background-color: linear-gradient(145deg, #e6e5e5, #c2c1c1);
-      box-shadow:  5px 5px 10px #aeadad,
-                   -5px -5px 10px #ffffff;
+      box-shadow: 5px 5px 10px #aeadad, -5px -5px 10px #ffffff;
       border: 2px solid transparent;
       transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
         box-shadow 0.3s ease-in-out;
@@ -333,10 +320,8 @@ body {
       }
 
       &.pressed {
-        
         background-color: #cdcdcd;
-        box-shadow: inset 5px 5px 10px #aeadad,
-                    inset -5px -5px 10px #ffffff;
+        box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
         border: 2px solid #c2c1c1;
       }
     }
@@ -346,7 +331,6 @@ body {
       right: 1rem;
       padding: 0.5rem;
       background-image: url("../img/sync1.png");
-
 
       &:hover {
         cursor: pointer;
@@ -362,7 +346,7 @@ body {
       // text-align: center;
       h2 {
         color: rgb(71, 71, 71);
-        text-shadow: -1px -1px rgb(255, 255, 255),1px 1px rgb(27, 27, 27);
+        text-shadow: -1px -1px rgb(255, 255, 255), 1px 1px rgb(27, 27, 27);
         width: fit-content;
         margin: 0 auto;
         font-size: 2.5rem;
@@ -392,12 +376,11 @@ body {
         z-index: 10;
         border-radius: 8px;
         background: #d7d6d6;
-        box-shadow: inset 3px 3px 8px #a6a5a5,
-                    inset -3px -3px 8px #ffffff;
-        
-        .vanilla-calendar-week__day{
+        box-shadow: inset 3px 3px 8px #a6a5a5, inset -3px -3px 8px #ffffff;
+
+        .vanilla-calendar-week__day {
           color: rgb(52, 130, 182);
-        }            
+        }
         .vanilla-calendar-day__btn_weekend {
           color: rgb(5, 102, 166);
         }
@@ -410,24 +393,28 @@ body {
         }
         .vanilla-calendar-day__btn_today {
           color: rgb(0, 0, 0);
-          border:2px solid rgb(255, 255, 255)!important;
+          border: 2px solid rgb(255, 255, 255) !important;
         }
-        .vanilla-calendar-day__btn{
-          background-color:#d7d6d6;
+        .vanilla-calendar-day__btn {
+          background-color: #d7d6d6;
         }
-        .vanilla-calendar-months, .vanilla-calendar-months__month, .vanilla-calendar-years,.vanilla-calendar-years__year,.vanilla-calendar-years_selecting{
-          background-color:#d7d6d6;
+        .vanilla-calendar-months,
+        .vanilla-calendar-months__month,
+        .vanilla-calendar-years,
+        .vanilla-calendar-years__year,
+        .vanilla-calendar-years_selecting {
+          background-color: #d7d6d6;
           color: rgb(0, 91, 151);
           font-size: 1.1rem;
         }
-        .vanilla-calendar-months__month_selected,.vanilla-calendar-years__year_selected{
+        .vanilla-calendar-months__month_selected,
+        .vanilla-calendar-years__year_selected {
           color: black;
         }
-        .vanilla-calendar-day__btn_next,.vanilla-calendar-years__year_disabled{
+        .vanilla-calendar-day__btn_next,
+        .vanilla-calendar-years__year_disabled {
           color: #7f7f7f !important;
         }
-
-     
       }
     }
 
@@ -450,7 +437,6 @@ body {
         }
 
         #typeToDo {
-        
           width: 100%;
           padding: 5px 10px;
           border: 2px solid #cdcdcd;
@@ -458,8 +444,7 @@ body {
           font-size: 2rem;
           border-radius: 12px;
           background: #d7d6d6;
-          box-shadow: inset 5px 5px 10px #aeadad,
-                      inset -5px -5px 10px #ffffff;
+          box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
 
           @media screen and (max-width: 450px) {
             font-size: 1.3rem;
@@ -473,15 +458,13 @@ body {
           padding: 5px 10px;
           border-radius: 10px;
           background-color: #d7d6d6;
-          box-shadow:  4px 4px 9px #919191,
-                       -4px -4px 9px #ffffff;
+          box-shadow: 4px 4px 9px #919191, -4px -4px 9px #ffffff;
           border: 2px solid transparent;
-          transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out, color 0.2s ease-in-out,
-            box-shadow 0.3s ease-in-out;
+          transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
+            color 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
 
           &.pressed {
-            box-shadow: inset 5px 5px 10px #aeadad,
-            inset -5px -5px 10px #ffffff;
+            box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
             border: 2px solid #cdcdcd;
 
             color: blue;
@@ -512,12 +495,10 @@ body {
         user-select: text;
         overflow: hidden;
         position: relative;
-        border: 2px solid transparent;
         border-radius: 17px;
         background-color: linear-gradient(145deg, #919191, #e6e5e5);
-        box-shadow:  3px 3px 10px #7f7f7f,
-                     -3px -3px 10px #ffffff;
-       
+        box-shadow: 3px 3px 10px #7f7f7f, -3px -3px 10px #ffffff;
+
         padding: 10px 10px;
         margin: 10px auto;
         position: relative;
@@ -533,7 +514,7 @@ body {
 
         .todoitem__handle {
           width: 1.8rem;
-          margin-top: .4rem;
+          margin-top: 0.4rem;
 
           &:hover {
             cursor: grab;
@@ -541,7 +522,6 @@ body {
         }
 
         .todoitem__check_block {
-          // width: 70%;
           display: flex;
           column-gap: 1rem;
           align-items: center;
@@ -559,16 +539,12 @@ body {
 
               &:hover {
                 cursor: pointer;
-                &::before {
-                  // background: rgb(85, 85, 85);
-                }
               }
 
               &.checked {
                 cursor: pointer;
-              
+
                 &::before {
-                
                   background-color: blue;
                 }
               }
@@ -579,17 +555,12 @@ body {
                 left: -3rem;
                 top: 0rem;
 
-                width: .5rem;
-                height: .5rem;
+                width: 0.5rem;
+                height: 0.5rem;
 
-                // background-image: url("../img/checkmark.png");
-                // background-size: 70%;
-                // background-repeat: no-repeat;
-                // background-position: center;
                 border-radius: 50%;
                 background-color: rgb(89, 89, 89);
-                // border: 2px solid transparent;
-                // box-shadow: 3px 3px 8px #777777, -3px -3px 8px #b6b6b6;
+
                 transition: background 0.2s ease-in-out,
                   box-shadow 0.3s ease-in-out;
               }
@@ -608,35 +579,27 @@ body {
           border-radius: 50%;
           background-color: transparent;
           border: 2px solid transparent;
-          box-shadow:  3px 3px 9px #8f8e8e,
-                   -3px -3px 9px #ffffff;
+          box-shadow: 3px 3px 9px #8f8e8e, -3px -3px 9px #ffffff;
           transition: background 0.2s ease-in-out, box-shadow 0.3s ease-in-out,
             box-shadow 0.3s ease-in-out;
-          // float: right
-          // position: absolute;
-          // right: -2.5rem;
-          // top: -0.2rem;
 
           &:hover {
             cursor: pointer;
           }
 
           &.pressed {
-            box-shadow:inset  3px 3px 10px #aeadad,
-                  inset -3px -3px 10px #ffffff;
-                  border: 2px solid #cdcdcd;
+            box-shadow: inset 3px 3px 10px #aeadad, inset -3px -3px 10px #ffffff;
+            border: 2px solid #cdcdcd;
             background-color: #d7d6d6;
-             background-image: url("../img/settings-blue.png");
+            background-image: url("../img/settings-blue.png");
           }
         }
 
         &.done {
-         
           border: 2px solid #cdcdcd;
-        background: linear-gradient(145deg, #b9b9b9, #d1d1d1)!important;
+          background: linear-gradient(145deg, #b9b9b9, #d1d1d1) !important;
 
-        box-shadow: inset 4px 4px 10px #929292,
-            inset -4px -4px 10px #ffffff;
+          box-shadow: inset 4px 4px 10px #929292, inset -4px -4px 10px #ffffff;
         }
 
         .setings_panel {
@@ -695,23 +658,18 @@ body {
               }
               &.blue {
                 background: rgb(169, 209, 247);
-                // top: 100px;left: 68px;
               }
               &.yellow {
                 background: rgb(239, 247, 169);
-                // top: 23px;left: 0px;
               }
               &.red {
                 background: rgb(247, 169, 169);
-                // top: 54px;left: -4px;
               }
               &.green {
                 background: rgb(169, 247, 169);
-                // top: 86px;left: 4px;
               }
               &.pink {
                 background: rgb(247, 169, 247);
-                // top: 104px;left: 35px;
               }
             }
           }
@@ -726,10 +684,9 @@ body {
       min-height: 50px;
       height: 50px;
       padding: 1rem 0;
-      // background: rgb(181, 181, 181);
+
       border-radius: 10px;
-      // position: absolute;
-      // top: 10px; right: 10px;
+
       margin: 2rem auto 0;
       border: 2px solid #cdcdcd;
       display: flex;
@@ -737,8 +694,7 @@ body {
       justify-content: center;
       align-items: center;
       background-color: #d7d6d6;
-      box-shadow: inset 5px 5px 10px #aeadad,
-                  inset -5px -5px 10px #ffffff;
+      box-shadow: inset 5px 5px 10px #aeadad, inset -5px -5px 10px #ffffff;
       transition: width 0.3s cubic-bezier(0.46, -0.26, 0.63, 1.25),
         border 0.2s cubic-bezier(0.46, -0.26, 0.63, 1.25);
 

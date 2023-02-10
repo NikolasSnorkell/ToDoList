@@ -1,4 +1,5 @@
 
+//проверка залогинен ли пользователь ранее
 if(localStorage.getItem('login')==undefined && localStorage.getItem('pass')==undefined){
   localStorage.setItem("login","");
   localStorage.setItem("pass","");
@@ -6,6 +7,8 @@ if(localStorage.getItem('login')==undefined && localStorage.getItem('pass')==und
   document.location.href = "todo.html";
 }
 
+
+// загрузочный экран
 window.addEventListener('load', function () {
   $('#loading').animate({'opacity':"0"},300);
   setTimeout(() => {
@@ -201,7 +204,7 @@ function login_send(){
 
 
 //------------
-// функция назначающая Enter для добавления дела
+// функция назначающая Enter для отправки данных
 
 function  enterToDo(){
   $(document).keyup(function(e) {
@@ -220,7 +223,7 @@ function  enterToDo(){
   });
 }
 
-
+//анимация нажатия на кнопку выбора регистрации или логина
 function press(flag){
   switch (flag){
    

@@ -546,7 +546,6 @@ body {
           user-select: text;
   overflow: hidden;
   position: relative;
-  border: 2px solid transparent;
   border-radius: 17px;
   background-color: linear-gradient(145deg, #919191, #e6e5e5);
   box-shadow: 3px 3px 10px #7f7f7f, -3px -3px 10px #ffffff;
