@@ -1,4 +1,3 @@
-
 //защита от незалогиненного пользователя
 if (localStorage.getItem("login") == "") {
   document.location.href = "index.html";
@@ -21,8 +20,6 @@ $(document).ajaxError(function (event, request, settings) {
 
 window.addEventListener("offline", () => (statusNetwork = "offline"));
 window.addEventListener("online", () => (statusNetwork = "online"));
-
-
 
 var todoitem_colors = {
   blue: " background: linear-gradient(145deg, #c2c2c2, #bdc8f6)",
@@ -97,7 +94,6 @@ new Sortable(document.querySelector("#main__todo_block"), {
       for ([index, todo] of todosActive.entries()) {
         todo.body = tempArr[index].innerText;
         todo.color = tempArr[index].getAttribute("color");
-  
       }
 
       saveToLocal();
@@ -141,6 +137,49 @@ function showDate(dateVar) {
 
 showDate(system_date);
 
+function localStorageCheck() {
+    let loc_mail = localStorage.getItem("login");
+    let currentTime = new Date().getTime() / 1000;
+    let localstoritem = JSON.parse(localStorage.getItem("currentDay"));
+
+  if (localStorage.getItem("currentDay") == null) {
+  
+
+    let jsonString = {
+      aim: "create/update",
+      arr1: todosActive,
+      arr2: todosDone,
+      date: todayDate,
+      loc_mail: loc_mail,
+      timestamp: currentTime,
+    };
+
+    localStorage.setItem("currentDay", JSON.stringify(jsonString));
+  }
+
+  
+  if (localstoritem.date != todayDate) {
+    jsonString = {
+      aim: "create/update",
+      arr1: localstoritem.arr1,
+      arr2: localstoritem.arr2,
+      date: localstoritem.date,
+      loc_mail: loc_mail,
+      timestamp: currentTime,
+    };
+console.log(localstoritem);
+    if (statusNetwork == "online") {
+      $.post("php/updateJson.php", jsonString, function (response) {
+        console.log(response);
+      });
+    } else {
+      alert("Cannot sync old saves! You are offline now.");
+    }
+  }
+}
+
+localStorageCheck();
+
 // ----------------------------------
 // проверка существует ли Json файл и если его нет то создаем
 
@@ -170,19 +209,26 @@ function gettingJson(dateVar) {
         response = JSON.parse(response);
         let localItem = JSON.parse(localStorage.getItem("currentDay"));
 
-        if (dateVar == localItem.date && localItem!=null && +response[2] <= +localItem.timestamp  ) {
+        if (
+          dateVar == localItem.date &&
+          localItem != null &&
+          +response[2] <= +localItem.timestamp
+        ) {
           if (localItem["arr1"] != null) todosActive = [...localItem["arr1"]];
           else todosActive = [];
           if (localItem["arr2"] != null) todosDone = [...localItem["arr2"]];
           else todosDone = [];
-        } else if(dateVar != localItem.date || +response[2] > +localItem.timestamp){
+        } else if (
+          dateVar != localItem.date ||
+          +response[2] > +localItem.timestamp
+        ) {
           if (response[0] != null) todosActive = [...response[0]];
           else todosActive = [];
           if (response[1] != null) todosDone = [...response[1]];
           else todosDone = [];
         }
 
-        if(localItem==null ){
+        if (localItem == null) {
           localItem = "";
         }
 
@@ -211,19 +257,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (statusNetwork == "online") {
           checkedJsonPromise = checkJson(system_date);
           gettingJson(system_date);
-        } else if(system_date==todayDate && statusNetwork=="offline"){
+        } else if (system_date == todayDate && statusNetwork == "offline") {
           gettingJson(system_date);
         } else {
           alert("You are currently offline!");
         }
         showDate(system_date);
-       
       },
     },
   });
   calendar.init();
 });
-
 
 $("#main__todo_title h2").click(function () {
   $("#calendar__block").toggleClass("shown");
@@ -244,7 +288,6 @@ function showToDos(arr) {
       picker_choose_3 = "",
       picker_choose_4 = "",
       picker_choose_5 = "";
-     
 
     // проверка статуса дела
     if (todo.status == "done") {
@@ -305,7 +348,6 @@ function showToDos(arr) {
   }
 }
 
-
 //----------------------------------
 
 // слушатель для добавления нового дела в список
@@ -339,7 +381,6 @@ function delItem(elem) {
   } else {
     todosActive.splice(parent_id, 1);
   }
-
 
   showToDos([...todosActive, ...todosDone]);
   saveToLocal();
@@ -397,10 +438,7 @@ function sendToDos() {
   }
 
   if (statusNetwork == "online") {
-    $.post("php/updateJson.php", jsonString, function (response) {
-     
-    });
-
+    $.post("php/updateJson.php", jsonString, function (response) {});
   } else {
     alert("Cannot sync! You are offline now.");
   }
@@ -460,7 +498,7 @@ function enterToDo() {
 // функция открытия панели настроек, swich здесь это элемент шестеренка
 
 function settingsItem(swich) {
- press(swich);
+  press(swich);
   let id_parent = $(swich).parent().attr("name"); // забираем id родителя чтобы открыть панель у нужного блока
   let id_needed = "";
   let edit_item = $(swich).siblings("div").children(".edit_item");
@@ -579,7 +617,6 @@ function editItem(elem) {
     .children("label")
     .text();
   $("#edit__area").val(item_text);
-
 }
 
 // функция при нажатии кнопки edit в поле редактирования дела
@@ -603,47 +640,45 @@ $("#edit__blackplate").click(function () {
   $("#edit__overlay").css("visibility", "hidden");
 });
 
-
 // анимации нажатия для ряда кнопок
-function press(flag){
-  switch (flag){
-    case 'sync': 
+function press(flag) {
+  switch (flag) {
+    case "sync":
       $("#main__todo_sync").toggleClass("pressed");
       setTimeout(() => {
         $("#main__todo_sync").toggleClass("pressed");
       }, 800);
-      break
-    case 'logout':  
+      break;
+    case "logout":
       $("#main__todo_logout").toggleClass("pressed");
-      break
-    case 'addToDo': 
+      break;
+    case "addToDo":
       $("#addToDo").toggleClass("pressed");
       setTimeout(() => {
         $("#addToDo").toggleClass("pressed");
       }, 800);
-      break
-    case 'editToDo': 
+      break;
+    case "editToDo":
       $("#edit__confirm").toggleClass("pressed");
       setTimeout(() => {
         $("#edit__confirm").toggleClass("pressed");
       }, 800);
-      break
-    case 'regToDo': 
+      break;
+    case "regToDo":
       $("#reg__send").toggleClass("pressed");
       setTimeout(() => {
         $("#reg__send").toggleClass("pressed");
       }, 800);
-      break
-    case 'editToDo': 
+      break;
+    case "editToDo":
       $("#login__send").toggleClass("pressed");
       setTimeout(() => {
         $("#login__send").toggleClass("pressed");
       }, 800);
-      break
+      break;
     default:
-       $(flag).toggleClass("pressed");
-    }
-    
+      $(flag).toggleClass("pressed");
+  }
 }
 
-$("#main__todo_sync").on("touchstart",()=>press('sync'));
+$("#main__todo_sync").on("touchstart", () => press("sync"));
