@@ -151,7 +151,7 @@ function localStorageCheck() {
       arr2: todosDone,
       date: todayDate,
       loc_mail: loc_mail,
-      timestamp: currentTime,
+      timestamp: '0',
     };
 
     localStorage.setItem("currentDay", JSON.stringify(jsonString));
@@ -167,10 +167,10 @@ function localStorageCheck() {
       loc_mail: loc_mail,
       timestamp: currentTime,
     };
-console.log(localstoritem);
+//console.log(localstoritem);
     if (statusNetwork == "online") {
       $.post("php/updateJson.php", jsonString, function (response) {
-        console.log(response);
+        //console.log(response);
       });
     } else {
       alert("Cannot sync old saves! You are offline now.");
